@@ -2,4 +2,5 @@
 <resources>
     <color name="background">#000000</color>
     <color name="digital_text">#ffffff</color>
+    <color name="trtl_bg">#212821</color>
 </resources>

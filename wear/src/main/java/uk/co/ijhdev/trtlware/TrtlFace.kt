@@ -4,11 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -16,13 +12,15 @@ import android.support.v4.content.ContextCompat
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
-import android.view.SurfaceHolder
-import android.view.WindowInsets
+import android.view.*
 import android.widget.Toast
 
 import java.lang.ref.WeakReference
 import java.util.Calendar
 import java.util.TimeZone
+import android.widget.TextView
+
+
 
 /**
  * Digital watch face with seconds. In ambient mode, the seconds aren't displayed. On devices with
@@ -37,6 +35,17 @@ import java.util.TimeZone
  * https://codelabs.developers.google.com/codelabs/watchface/index.html#0
  */
 class TrtlFace : CanvasWatchFaceService() {
+
+    lateinit var watchLayout : View
+    var specW: Int = 0
+    var specH:Int = 0
+    private val day: TextView? = null
+    private val date: TextView? = null
+    private val month: TextView? = null
+    private val hour: TextView? = null
+    private val minute: TextView? = null
+    private val second: TextView? = null
+    private val displaySize = Point()
 
     companion object {
         private val NORMAL_TYPEFACE = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
@@ -54,6 +63,15 @@ class TrtlFace : CanvasWatchFaceService() {
     }
 
     override fun onCreateEngine(): Engine {
+
+        var inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        watchLayout = inflater.inflate(R.layout.watchface, null)
+
+        var display = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        display.getDefaultDisplay()
+        specW = View.MeasureSpec.makeMeasureSpec(displaySize.x, View.MeasureSpec.EXACTLY)
+        specH = View.MeasureSpec.makeMeasureSpec(displaySize.y, View.MeasureSpec.EXACTLY);
+
         return Engine()
     }
 
