@@ -1,56 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/trtl_bg"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    android:paddingTop="-10dp">
 
     <FrameLayout
         android:id="@+id/bottomright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/bottomleft">
+        android:layout_alignTop="@+id/bottomleft"
+        android:layout_marginRight="15dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/sq1"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginRight="20dp"
             android:adjustViewBounds="false"
-            android:cropToPadding="true"
+            android:cropToPadding="false"
             android:scaleType="fitXY"
             android:src="@drawable/infobox" />
+
+        <TextView
+            android:id="@+id/temp_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="66F"
+            android:textAlignment="center"
+            android:textColor="@color/ambient_mode_text"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/weather_ico"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_full_sad" />
+
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/bottomleft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/topright">
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/topright"
+        android:layout_marginLeft="15dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/sq2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
             android:adjustViewBounds="false"
             android:cropToPadding="true"
             android:scaleType="fitXY"
             android:src="@drawable/infobox" />
+
+        <TextView
+            android:id="@+id/date_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="12/31"
+            android:textAlignment="center"
+            android:textColor="@color/ambient_mode_text"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/calendarico"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/calendar" />
+
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/topleft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/bottomright"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/sq3"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="5dp"
@@ -58,6 +96,25 @@
             android:cropToPadding="true"
             android:scaleType="fitXY"
             android:src="@drawable/infobox" />
+
+        <TextView
+            android:id="@+id/watch_power"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="100%"
+            android:textAlignment="center"
+            android:textColor="@color/ambient_mode_text"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/watchind"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/watch" />
+
     </FrameLayout>
 
     <FrameLayout
@@ -65,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="17dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -73,13 +130,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/hourtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/textView3"
                 android:layout_toEndOf="@+id/textView3"
                 android:layout_weight="1"
                 android:text="99"
+                android:textColor="@color/ambient_mode_text"
                 android:textSize="30sp" />
 
             <TextView
@@ -90,36 +148,40 @@
                 android:layout_toEndOf="@+id/textView2"
                 android:layout_weight="1"
                 android:text=":"
+                android:textColor="@color/ambient_mode_text"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/mintime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/textView3"
                 android:layout_toEndOf="@+id/textView3"
                 android:layout_weight="1"
                 android:text="99"
+                android:textColor="@color/ambient_mode_text"
                 android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/textView4"
-                android:layout_toEndOf="@+id/textView4"
+                android:layout_alignTop="@+id/hourtime"
+                android:layout_toEndOf="@+id/hourtime"
                 android:layout_weight="1"
                 android:text=":"
+                android:textColor="@color/ambient_mode_text"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/secondtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/textView5"
                 android:layout_toEndOf="@+id/textView5"
                 android:layout_weight="1"
                 android:text="99"
+                android:textColor="@color/ambient_mode_text"
                 android:textSize="30sp" />
 
         </LinearLayout>
@@ -127,28 +189,59 @@
 
     <FrameLayout
         android:id="@+id/topright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/topright"
-        android:paddingLeft="5dp">
+        android:layout_marginLeft="5dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/sq4"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignTop="@+id/logo"
+            android:layout_toStartOf="@+id/bottomright"
             android:adjustViewBounds="false"
             android:cropToPadding="true"
             android:scaleType="fitXY"
             android:src="@drawable/infobox" />
+
+        <TextView
+            android:id="@+id/phone_power"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="100%"
+            android:textAlignment="center"
+            android:textColor="@color/ambient_mode_text"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/phoneInd"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/phone" />
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logo"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bottomleft"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="trtl is currently worth £0.0002"
+        android:textAlignment="center"
+        android:textColor="@color/ambient_mode_text"
+        android:textSize="10sp" />
 
 </RelativeLayout>
