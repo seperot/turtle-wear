@@ -5,43 +5,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.*
+import android.os.BatteryManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.wearable.complications.SystemProviders.batteryProvider
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.view.*
-import android.widget.Toast
-import kotlinx.android.synthetic.main.watchface.*
-import java.lang.ref.WeakReference
-import java.util.Calendar
-import java.util.TimeZone
+import android.widget.ImageView
 import android.widget.TextView
-import org.w3c.dom.Text
-import uk.co.ijhdev.trtlware.R.id.*
+import android.widget.Toast
+import com.google.android.gms.wearable.DataClient
+import com.google.android.gms.wearable.Wearable
+import java.lang.ref.WeakReference
+import java.util.*
 import kotlin.math.roundToInt
-import android.os.BatteryManager
-import android.content.Context.BATTERY_SERVICE
 
 
-
-
-
-
-/**
- * Digital watch face with seconds. In ambient mode, the seconds aren't displayed. On devices with
- * low-bit ambient mode, the text is drawn without anti-aliasing in ambient mode.
- *
- *
- * Important Note: Because watch face apps do not have a default Activity in
- * their project, you will need to set your Configurations to
- * "Do not launch Activity" for both the Wear and/or Application modules. If you
- * are unsure how to do this, please review the "Run Starter project" section
- * in the Google Watch Face Code Lab:
- * https://codelabs.developers.google.com/codelabs/watchface/index.html#0
- */
 class TrtlFace : CanvasWatchFaceService() {
 
     lateinit var watchLayout : View
@@ -52,15 +33,8 @@ class TrtlFace : CanvasWatchFaceService() {
     companion object {
         private val NORMAL_TYPEFACE = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
 
-        /**
-         * Updates rate in milliseconds for interactive mode. We update once a second since seconds
-         * are displayed in interactive mode.
-         */
         private const val INTERACTIVE_UPDATE_RATE_MS = 1000
 
-        /**
-         * Handler message id for updating the time periodically in interactive mode.
-         */
         private const val MSG_UPDATE_TIME = 0
     }
 
@@ -93,10 +67,6 @@ class TrtlFace : CanvasWatchFaceService() {
         private lateinit var mBackgroundPaint: Paint
         private lateinit var mTextPaint: Paint
 
-        /**
-         * Whether the display supports fewer bits for each color in ambient mode. When true, we
-         * disable anti-aliasing in ambient mode.
-         */
         private var mLowBitAmbient: Boolean = false
         private var mBurnInProtection: Boolean = false
         private var mAmbient: Boolean = false
@@ -122,9 +92,6 @@ class TrtlFace : CanvasWatchFaceService() {
             val resources = this@TrtlFace.resources
             mYOffset = resources.getDimension(R.dimen.digital_y_offset)
 
-            // min_time  = mintime as TextView
-          //  second_time = secondtime as TextView
-          //
             var inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             watchLayout = inflater.inflate(R.layout.watchface, null)
             var display = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -153,31 +120,14 @@ class TrtlFace : CanvasWatchFaceService() {
         override fun onAmbientModeChanged(inAmbientMode: Boolean) {
             super.onAmbientModeChanged(inAmbientMode)
             mAmbient = inAmbientMode
-//
-//            if (mLowBitAmbient) {
-//                mTextPaint.isAntiAlias = !inAmbientMode
-//            }
-
-            // Whether the timer should be running depends on whether we're visible (as well as
-            // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer()
         }
 
-        /**
-         * Captures tap event (and tap type) and toggles the background color if the user finishes
-         * a tap.
-         */
         override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
             when (tapType) {
-                WatchFaceService.TAP_TYPE_TOUCH -> {
-                    // The user has started touching the screen.
-                }
-                WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {
-                    // The user has started a different gesture or otherwise cancelled the tap.
-                }
+                WatchFaceService.TAP_TYPE_TOUCH -> { }
+                WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> { }
                 WatchFaceService.TAP_TYPE_TAP ->
-                    // The user has completed the tap gesture.
-                    // TODO: Add code to handle the tap gesture.
                     Toast.makeText(applicationContext, R.string.message, Toast.LENGTH_SHORT)
                             .show()
             }
@@ -186,7 +136,19 @@ class TrtlFace : CanvasWatchFaceService() {
 
         override fun onDraw(canvas: Canvas, bounds: Rect) {
 
-            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
+            setTimeandDate()
+            setWatchBattery()
+
+
+            watchLayout.measure(specW, specH);
+            watchLayout.layout(0, 0, watchLayout.measuredWidth, watchLayout.measuredHeight)
+            canvas.save()
+            canvas.translate(mXOffset,mYOffset - 40)
+            watchLayout.draw(canvas)
+            canvas.restore()
+        }
+
+        fun setTimeandDate() {
             val now = System.currentTimeMillis()
             mCalendar.timeInMillis = now
             val date : TextView = watchLayout.findViewById(R.id.date_number)
@@ -195,24 +157,31 @@ class TrtlFace : CanvasWatchFaceService() {
             hour.text = String.format("%02d", mCalendar.get(Calendar.HOUR_OF_DAY))
             val min : TextView = watchLayout.findViewById(R.id.mintime)
             min.text = String.format("%02d", mCalendar.get(Calendar.MINUTE))
+        }
 
-            if (!mAmbient) {
-                val second : TextView = watchLayout.findViewById(R.id.secondtime)
-                second.text = String.format("%02d", mCalendar.get(Calendar.SECOND))
-            }
+        fun setWatchBattery() {
             val bm = getSystemService(BATTERY_SERVICE) as BatteryManager
             val batLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
             val watch : TextView = watchLayout.findViewById(R.id.watch_power)
             watch.text = batLevel.toString() + " %"
+        }
 
-            watchLayout.measure(specW, specH);
-            watchLayout.layout(0, 0, watchLayout.measuredWidth, watchLayout.measuredHeight)
-            canvas.save()
-           // canvas.drawColor(Color.BLACK)
-            canvas.translate(mXOffset,mYOffset - 40)
-            watchLayout.draw(canvas)
-            canvas.restore()
+        fun setPhoneBattery() {
+
+            val phone : TextView = watchLayout.findViewById(R.id.phone_power)
+            phone.text =  " %"
+        }
+
+        fun setWeather() {
+            val temp : TextView = watchLayout.findViewById(R.id.temp_number)
+            temp.text =  " %"
+            val weather : ImageView = watchLayout.findViewById(R.id.weather_ico)
+        }
+
+        fun setTrtlPrice() {
+            val price : TextView = watchLayout.findViewById(R.id.price_ticker)
+            price.text =  "The current value of trtl is "
         }
 
         override fun onVisibilityChanged(visible: Boolean) {
@@ -220,16 +189,11 @@ class TrtlFace : CanvasWatchFaceService() {
 
             if (visible) {
                 registerReceiver()
-
-                // Update time zone in case it changed while we weren't visible.
                 mCalendar.timeZone = TimeZone.getDefault()
                 invalidate()
             } else {
                 unregisterReceiver()
             }
-
-            // Whether the timer should be running depends on whether we're visible (as well as
-            // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer()
         }
 
@@ -253,10 +217,9 @@ class TrtlFace : CanvasWatchFaceService() {
         override fun onApplyWindowInsets(insets: WindowInsets) {
             super.onApplyWindowInsets(insets)
 
-            // Load resources that have alternate values for round watches.
             val resources = this@TrtlFace.resources
             val isRound = insets.isRound
-            if (insets.isRound()) {
+            if (isRound) {
                 // Shrink the face to fit on a round screen
                 mYOffset = displaySize.x * 0.1f
                 displaySize.y -= 2 * mXOffset.roundToInt()
@@ -266,13 +229,8 @@ class TrtlFace : CanvasWatchFaceService() {
             }
             specW = View.MeasureSpec.makeMeasureSpec(displaySize.x, View.MeasureSpec.EXACTLY)
             specH = View.MeasureSpec.makeMeasureSpec(displaySize.y, View.MeasureSpec.EXACTLY)
-          //  mTextPaint.textSize = textSize
         }
 
-        /**
-         * Starts the [.mUpdateTimeHandler] timer if it should be running and isn't currently
-         * or stops it if it shouldn't be running but currently is.
-         */
         private fun updateTimer() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME)
             if (shouldTimerBeRunning()) {
@@ -280,17 +238,10 @@ class TrtlFace : CanvasWatchFaceService() {
             }
         }
 
-        /**
-         * Returns whether the [.mUpdateTimeHandler] timer should be running. The timer should
-         * only run when we're visible and in interactive mode.
-         */
         private fun shouldTimerBeRunning(): Boolean {
             return isVisible && !isInAmbientMode
         }
 
-        /**
-         * Handle updating the time periodically in interactive mode.
-         */
         fun handleUpdateTimeMessage() {
             invalidate()
             if (shouldTimerBeRunning()) {

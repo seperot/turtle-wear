@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exchange_array_main">
+        <item name="ogre">TradeOgre</item>
+        <item name="satoshi">TradeSatoshi</item>
+    </string-array>
+</resources>

@@ -14,13 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".WareSettingsActivity"
+            android:name=".Activity.WareSettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
+                <action android:name="uk.co.ijhdev.trtlware.CONFIG_DIGITAL" />
+
+                <category android:name="com.google.android.wearable.watchface.category.COMPANION_CONFIGURATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
         </activity>
     </application>
 

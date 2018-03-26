@@ -171,7 +171,8 @@
                 android:layout_weight="1"
                 android:text=":"
                 android:textColor="@color/ambient_mode_text"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/secondtime"
@@ -182,7 +183,8 @@
                 android:layout_weight="1"
                 android:text="99"
                 android:textColor="@color/ambient_mode_text"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </FrameLayout>
@@ -233,7 +235,7 @@
         android:src="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/price_ticker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bottomleft"
