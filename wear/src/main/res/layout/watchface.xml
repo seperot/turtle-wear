@@ -138,7 +138,8 @@
                 android:layout_weight="1"
                 android:text="99"
                 android:textColor="@color/ambient_mode_text"
-                android:textSize="30sp" />
+                android:textSize="35sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -160,7 +161,8 @@
                 android:layout_weight="1"
                 android:text="99"
                 android:textColor="@color/ambient_mode_text"
-                android:textSize="30sp" />
+                android:textSize="35sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -228,10 +230,10 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_below="@+id/time"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:src="@drawable/logo" />
 
     <TextView

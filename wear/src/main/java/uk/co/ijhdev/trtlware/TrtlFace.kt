@@ -13,9 +13,7 @@ import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.Wearable
 import java.lang.ref.WeakReference
@@ -119,8 +117,29 @@ class TrtlFace : CanvasWatchFaceService() {
 
         override fun onAmbientModeChanged(inAmbientMode: Boolean) {
             super.onAmbientModeChanged(inAmbientMode)
-            mAmbient = inAmbientMode
             updateTimer()
+            val bottomLeft : FrameLayout = watchLayout.findViewById(R.id.bottomleft)
+            val bottomRight : FrameLayout = watchLayout.findViewById(R.id.bottomright)
+            val topLeft : FrameLayout = watchLayout.findViewById(R.id.topleft)
+            val topRight : FrameLayout = watchLayout.findViewById(R.id.topright)
+            val price : TextView = watchLayout.findViewById(R.id.price_ticker)
+            val logo : ImageView = watchLayout.findViewById(R.id.logo)
+            if(inAmbientMode) {
+                bottomLeft.visibility = View.INVISIBLE
+                bottomRight.visibility = View.INVISIBLE
+                topLeft.visibility = View.INVISIBLE
+                topRight.visibility = View.INVISIBLE
+                price.visibility = View.INVISIBLE
+                logo.setImageResource(R.drawable.logo_white)
+            }
+            else {
+                bottomLeft.visibility = View.VISIBLE
+                bottomRight.visibility = View.VISIBLE
+                topLeft.visibility = View.VISIBLE
+                topRight.visibility = View.VISIBLE
+                price.visibility = View.VISIBLE
+                logo.setImageResource(R.drawable.logo)
+            }
         }
 
         override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
