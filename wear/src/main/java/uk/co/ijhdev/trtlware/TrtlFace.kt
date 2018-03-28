@@ -12,13 +12,22 @@ import android.os.Message
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
+import android.util.Log
 import android.view.*
 import android.widget.*
-import com.google.android.gms.wearable.DataClient
-import com.google.android.gms.wearable.Wearable
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.wearable.*
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
+import android.graphics.Color.parseColor
+import android.graphics.drawable.Drawable
+import com.google.android.gms.common.api.ResultCallback
+import com.google.android.gms.wearable.DataMapItem
+import com.google.android.gms.wearable.DataMap
+import com.google.android.gms.wearable.DataItem
+import java.text.Format
 
 
 class TrtlFace : CanvasWatchFaceService() {
@@ -53,7 +62,9 @@ class TrtlFace : CanvasWatchFaceService() {
         }
     }
 
-    inner class Engine : CanvasWatchFaceService.Engine() {
+    inner class Engine : CanvasWatchFaceService.Engine(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+        lateinit var googleApiClient : GoogleApiClient
 
         private lateinit var mCalendar: Calendar
 
@@ -85,6 +96,12 @@ class TrtlFace : CanvasWatchFaceService() {
                     .setAcceptsTapEvents(true)
                     .build())
 
+            googleApiClient = GoogleApiClient.Builder(this@TrtlFace)
+                    .addApi(Wearable.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build()
+
             mCalendar = Calendar.getInstance()
 
             val resources = this@TrtlFace.resources
@@ -99,6 +116,7 @@ class TrtlFace : CanvasWatchFaceService() {
 
         override fun onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME)
+            releaseGoogleApiClient()
             super.onDestroy()
         }
 
@@ -167,7 +185,7 @@ class TrtlFace : CanvasWatchFaceService() {
             canvas.restore()
         }
 
-        fun setTimeandDate() {
+        private fun setTimeandDate() {
             val now = System.currentTimeMillis()
             mCalendar.timeInMillis = now
             val date : TextView = watchLayout.findViewById(R.id.date_number)
@@ -178,7 +196,7 @@ class TrtlFace : CanvasWatchFaceService() {
             min.text = String.format("%02d", mCalendar.get(Calendar.MINUTE))
         }
 
-        fun setWatchBattery() {
+        private fun setWatchBattery() {
             val bm = getSystemService(BATTERY_SERVICE) as BatteryManager
             val batLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
@@ -186,16 +204,18 @@ class TrtlFace : CanvasWatchFaceService() {
             watch.text = batLevel.toString() + " %"
         }
 
-        fun setPhoneBattery() {
-
+        private fun setPhoneBattery(phoneBat: String) {
             val phone : TextView = watchLayout.findViewById(R.id.phone_power)
-            phone.text =  " %"
+            phone.text =  phoneBat
         }
 
-        fun setWeather() {
-            val temp : TextView = watchLayout.findViewById(R.id.temp_number)
-            temp.text =  " %"
+        fun setWeather(temp : String, weth : String) {
+            val tempr : TextView = watchLayout.findViewById(R.id.temp_number)
+            tempr.text = temp
+            val id = resources.getIdentifier("w$weth", "drawable", packageName)
+            val drawable = resources.getDrawable(id)
             val weather : ImageView = watchLayout.findViewById(R.id.weather_ico)
+            weather.setImageDrawable(drawable)
         }
 
         fun setTrtlPrice() {
@@ -209,11 +229,20 @@ class TrtlFace : CanvasWatchFaceService() {
             if (visible) {
                 registerReceiver()
                 mCalendar.timeZone = TimeZone.getDefault()
+                googleApiClient.connect()
                 invalidate()
             } else {
                 unregisterReceiver()
+                releaseGoogleApiClient()
             }
             updateTimer()
+        }
+
+        private fun releaseGoogleApiClient() {
+            if (googleApiClient != null && googleApiClient.isConnected) {
+                Wearable.DataApi.removeListener(googleApiClient, onDataChangedListener)
+                googleApiClient.disconnect()
+            }
         }
 
         private fun registerReceiver() {
@@ -268,6 +297,54 @@ class TrtlFace : CanvasWatchFaceService() {
                 val delayMs = INTERACTIVE_UPDATE_RATE_MS - timeMs % INTERACTIVE_UPDATE_RATE_MS
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs)
             }
+        }
+
+        private val onDataChangedListener = DataApi.DataListener { dataEvents ->
+            Log.d("tag", "changedList")
+            for (event in dataEvents) {
+                if (event.type == DataEvent.TYPE_CHANGED) {
+                    val item = event.dataItem
+                    processConfigurationFor(item)
+                }
+            }
+
+            dataEvents.release()
+        }
+
+        private fun processConfigurationFor(item: DataItem) {
+            if ("/trtlwear" == item.uri.path) {
+                val dataMap = DataMapItem.fromDataItem(item).dataMap
+                if (dataMap.containsKey("Bat_Power")) {
+                    setPhoneBattery(dataMap.getString("Bat_Power"))
+                }
+                if (dataMap.containsKey("weather_temp") && dataMap.containsKey("weather_type")) {
+                    setWeather(dataMap.getString("weather_temp"), dataMap.getString("weather_type"))
+                }
+            }
+        }
+
+       private val onConnectedResultCallback : ResultCallback<DataItemBuffer>  = object:ResultCallback<DataItemBuffer> {
+           override fun onResult(p0: DataItemBuffer) {
+               for (item in p0) {
+                   processConfigurationFor(item)
+               }
+
+               p0.release()
+           }
+       }
+
+        override fun onConnected(bundle: Bundle?) {
+            Log.d("tag", "connected GoogleAPI")
+            Wearable.DataApi.addListener(googleApiClient, onDataChangedListener)
+            Wearable.DataApi.getDataItems(googleApiClient).setResultCallback(onConnectedResultCallback)
+        }
+
+        override fun onConnectionSuspended(i: Int) {
+            Log.e("tag", "suspended GoogleAPI")
+        }
+
+        override fun onConnectionFailed(connectionResult: ConnectionResult) {
+            Log.e("tag", "connectionFailed GoogleAPI")
         }
     }
 }
