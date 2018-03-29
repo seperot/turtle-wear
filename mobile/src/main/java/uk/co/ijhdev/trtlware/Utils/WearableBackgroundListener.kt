@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.icu.util.ULocale
 import android.os.BatteryManager
 import android.os.Handler
 import android.support.v4.app.ActivityCompat
@@ -13,7 +14,13 @@ import com.google.android.gms.awareness.Awareness
 import com.google.android.gms.awareness.state.Weather
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.wearable.*
+import retrofit2.Call
+import retrofit2.Callback
 import uk.co.ijhdev.trtlware.Activity.WareSettingsActivity
+import uk.co.ijhdev.trtlware.Exchanges.Fiat
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
@@ -49,24 +56,19 @@ class WearableBackgroundListener : WearableListenerService() {
     private fun runUpdates() {
         getBatteryLevel()
         getWeather()
-        handler.postDelayed(runnable, 600)
+        getValue()
+        handler.postDelayed(runnable, 300000)
     }
 
     override fun onDataChanged(dataEvents: DataEventBuffer?) {
         LOGD(TAG, "onDataChanged: " + dataEvents!!)
 
-        // Loop through the events and send a message back to the node that created the data item.
         for (event in dataEvents) {
             val uri = event.dataItem.uri
             val path = uri.path
             if (COUNT_PATH == path) {
-                // Get the node id of the node that created the data item from the host portion of
-                // the uri.
                 val nodeId = uri.host
-                // Set the data of the message to be the bytes of the Uri.
                 val payload = uri.toString().toByteArray()
-
-                // Send the rpc
                 Wearable.MessageApi.sendMessage(googleApiClient, nodeId, DATA_ITEM_RECEIVED_PATH,
                         payload)
             }
@@ -101,6 +103,35 @@ class WearableBackgroundListener : WearableListenerService() {
 
                     }
         }
+    }
+
+    fun getValue() {
+        if(prefs!!.getString(cur, "") != "BTC") {
+            fiatPrice()
+        }
+    }
+
+    fun fiatPrice ()  {
+        val apiService = Fiat.ApiInterface.create()
+        val call = apiService.getCategoryDetails()
+        var value: Float
+        call.enqueue(object : Callback<Fiat.CurrencyRes> {
+            override fun onResponse(call: Call<Fiat.CurrencyRes>, response: retrofit2.Response<Fiat.CurrencyRes>?) {
+                if (response != null) {
+                    value = response.body()?.usd?.last!!.toFloat()
+                    val oneSat = value / 100000000
+                    val nf = NumberFormat.getInstance()
+                    nf.maximumFractionDigits = 6
+                    nf.isGroupingUsed = false
+                    putDataMapReq.getDataMap().putString("price", "1 trtl = " + response.body()?.usd?.symbol + nf.format(oneSat))
+                }
+
+            }
+
+            override fun onFailure(call: Call<Fiat.CurrencyRes>, t: Throwable) {
+
+            }
+        })
     }
 
     override fun onMessageReceived(messageEvent: MessageEvent?) {

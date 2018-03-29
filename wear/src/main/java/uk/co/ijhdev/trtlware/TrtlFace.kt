@@ -218,9 +218,9 @@ class TrtlFace : CanvasWatchFaceService() {
             weather.setImageDrawable(drawable)
         }
 
-        fun setTrtlPrice() {
+        fun setTrtlPrice(pricepoint: String) {
             val price : TextView = watchLayout.findViewById(R.id.price_ticker)
-            price.text =  "The current value of trtl is "
+            price.text =  pricepoint
         }
 
         override fun onVisibilityChanged(visible: Boolean) {
@@ -319,6 +319,9 @@ class TrtlFace : CanvasWatchFaceService() {
                 }
                 if (dataMap.containsKey("weather_temp") && dataMap.containsKey("weather_type")) {
                     setWeather(dataMap.getString("weather_temp"), dataMap.getString("weather_type"))
+                }
+                if (dataMap.containsKey("price")) {
+                    setTrtlPrice(dataMap.getString("price"))
                 }
             }
         }

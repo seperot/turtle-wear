@@ -240,10 +240,9 @@
         android:id="@+id/price_ticker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bottomleft"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:text="trtl is currently worth £0.0002"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/bottomright"
+        android:text="1 trtl = 1 trtl"
         android:textAlignment="center"
         android:textColor="@color/ambient_mode_text"
         android:textSize="10sp" />

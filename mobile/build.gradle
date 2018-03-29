@@ -36,6 +36,9 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.android.support:design:26.1.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    compile 'com.squareup.retrofit2:retrofit:2.4.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

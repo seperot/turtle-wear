@@ -6,5 +6,6 @@
         <item name="CAD">CAD</item>
         <item name="EUR">EUR</item>
         <item name="RUB">RUB</item>
+        <item name="BTC">BTC</item>
     </string-array>
 </resources>

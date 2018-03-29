@@ -12,7 +12,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.trtlwear_settings.*
 import uk.co.ijhdev.trtlware.R
-import uk.co.ijhdev.trtlware.Utils.BackgroundUpdater
 import uk.co.ijhdev.trtlware.Utils.WearableBackgroundListener
 
 
@@ -37,6 +36,9 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         currentWeather = "fahrenheit"
         if(prefs!!.getString(tem, "") != null) {
             currentWeather = prefs!!.getString(tem, "")
+        }
+        if(prefs!!.getString(cur, "") == null) {
+            prefs.edit().putString(cur, "GBP").apply()
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
