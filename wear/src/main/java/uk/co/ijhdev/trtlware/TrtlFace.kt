@@ -301,7 +301,6 @@ class TrtlFace : CanvasWatchFaceService() {
         }
 
         private val onDataChangedListener = DataApi.DataListener { dataEvents ->
-            Log.d("tag", "changedList")
             for (event in dataEvents) {
                 if (event.type == DataEvent.TYPE_CHANGED) {
                     val item = event.dataItem
@@ -338,17 +337,14 @@ class TrtlFace : CanvasWatchFaceService() {
        }
 
         override fun onConnected(bundle: Bundle?) {
-            Log.d("tag", "connected GoogleAPI")
             Wearable.DataApi.addListener(googleApiClient, onDataChangedListener)
             Wearable.DataApi.getDataItems(googleApiClient).setResultCallback(onConnectedResultCallback)
         }
 
         override fun onConnectionSuspended(i: Int) {
-            Log.e("tag", "suspended GoogleAPI")
         }
 
         override fun onConnectionFailed(connectionResult: ConnectionResult) {
-            Log.e("tag", "connectionFailed GoogleAPI")
         }
     }
 }
