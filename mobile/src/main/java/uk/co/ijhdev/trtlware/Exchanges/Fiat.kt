@@ -6,6 +6,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
+/**
+ * Created by Seperot on 26/03/2018.
+ */
+
 class Fiat {
 
     class Currency {

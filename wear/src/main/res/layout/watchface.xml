@@ -37,7 +37,7 @@
             android:id="@+id/weather_ico"
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_full_sad" />
 
@@ -73,7 +73,7 @@
             android:id="@+id/calendarico"
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/calendar" />
 
@@ -101,7 +101,7 @@
             android:id="@+id/watch_power"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="22dp"
             android:text="100%"
             android:textAlignment="center"
             android:textColor="@color/ambient_mode_text"
@@ -111,7 +111,7 @@
             android:id="@+id/watchind"
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/watch" />
 
@@ -213,7 +213,7 @@
             android:id="@+id/phone_power"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="22dp"
             android:text="100%"
             android:textAlignment="center"
             android:textColor="@color/ambient_mode_text"
@@ -223,7 +223,7 @@
             android:id="@+id/phoneInd"
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/phone" />
     </FrameLayout>

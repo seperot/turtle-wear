@@ -1,10 +1,8 @@
 package uk.co.ijhdev.trtlware.Utils
 
 import android.Manifest
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.icu.util.ULocale
 import android.os.BatteryManager
 import android.os.Handler
 import android.support.v4.app.ActivityCompat
@@ -14,21 +12,13 @@ import com.google.android.gms.awareness.Awareness
 import com.google.android.gms.awareness.state.Weather
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.wearable.*
-import retrofit2.Call
-import retrofit2.Callback
-import uk.co.ijhdev.trtlware.Activity.WareSettingsActivity
-import uk.co.ijhdev.trtlware.Exchanges.Fiat
-import java.math.BigDecimal
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 
 /**
- * Created by IJHDev on 28/03/2018.
+ * Created by Seperot on 28/03/2018.
  */
+
 class WearableBackgroundListener : WearableListenerService() {
     lateinit var googleApiClient: GoogleApiClient
     val putDataMapReq = PutDataMapRequest.create("/trtlwear")
@@ -37,6 +27,7 @@ class WearableBackgroundListener : WearableListenerService() {
     val cur = "currency"
     val exc = "exchange"
     val tem = "temperature"
+    var tradePriceFinder = TradePriceFinder()
 
 
     override fun onCreate() {
@@ -47,17 +38,25 @@ class WearableBackgroundListener : WearableListenerService() {
                 .addApi(Awareness.API)
                 .build()
         googleApiClient.connect()
+        tradePriceFinder = TradePriceFinder(cur,exc,prefs,putDataMapReq)
         runUpdates()
+        runTradeUpdate()
     }
 
     private val handler = Handler()
     private val runnable = Runnable { runUpdates() }
+    private val runnableTrade = Runnable { runTradeUpdate() }
 
     private fun runUpdates() {
         getBatteryLevel()
         getWeather()
-        getValue()
-        handler.postDelayed(runnable, 300000)
+        handler.postDelayed(runnable, 60000)
+    }
+
+    private fun runTradeUpdate() {
+        tradePriceFinder.getExchangeValue()
+        tradePriceFinder.getValue()
+        handler.postDelayed(runnableTrade, 600000)
     }
 
     override fun onDataChanged(dataEvents: DataEventBuffer?) {
@@ -105,34 +104,6 @@ class WearableBackgroundListener : WearableListenerService() {
         }
     }
 
-    fun getValue() {
-        if(prefs!!.getString(cur, "") != "BTC") {
-            fiatPrice()
-        }
-    }
-
-    fun fiatPrice ()  {
-        val apiService = Fiat.ApiInterface.create()
-        val call = apiService.getCategoryDetails()
-        var value: Float
-        call.enqueue(object : Callback<Fiat.CurrencyRes> {
-            override fun onResponse(call: Call<Fiat.CurrencyRes>, response: retrofit2.Response<Fiat.CurrencyRes>?) {
-                if (response != null) {
-                    //TODO: change this value based on currency
-                    value = response.body()?.usd?.last!!.toFloat()
-                    val oneSat = value / 100000000
-                    //TODO: add maths for how many sats // get the exchanges up
-                    val nf = NumberFormat.getInstance()
-                    nf.maximumFractionDigits = 6
-                    nf.isGroupingUsed = false
-                    putDataMapReq.getDataMap().putString("price", "1 trtl = " + response.body()?.usd?.symbol + nf.format(oneSat))
-                }
-            }
-            override fun onFailure(call: Call<Fiat.CurrencyRes>, t: Throwable) {
-                putDataMapReq.getDataMap().putString("price", "1 trtl = 1 trtl")
-            }
-        })
-    }
 
     override fun onMessageReceived(messageEvent: MessageEvent?) {
 

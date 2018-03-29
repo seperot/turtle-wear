@@ -14,21 +14,21 @@ import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ResultCallback
 import com.google.android.gms.wearable.*
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
-import android.graphics.Color.parseColor
-import android.graphics.drawable.Drawable
-import com.google.android.gms.common.api.ResultCallback
-import com.google.android.gms.wearable.DataMapItem
-import com.google.android.gms.wearable.DataMap
-import com.google.android.gms.wearable.DataItem
-import java.text.Format
 
+/**
+ * Created by Seperot on 26/03/2018.
+ */
 
 class TrtlFace : CanvasWatchFaceService() {
 
@@ -162,11 +162,12 @@ class TrtlFace : CanvasWatchFaceService() {
 
         override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
             when (tapType) {
-                WatchFaceService.TAP_TYPE_TOUCH -> { }
-                WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> { }
-                WatchFaceService.TAP_TYPE_TAP ->
-                    Toast.makeText(applicationContext, R.string.message, Toast.LENGTH_SHORT)
-                            .show()
+                WatchFaceService.TAP_TYPE_TOUCH -> {
+                }
+                WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {
+                }
+                WatchFaceService.TAP_TYPE_TAP -> {
+                }
             }
             invalidate()
         }

@@ -3,6 +3,8 @@
 Trtlwear is a watchface that tells you all the important things you need, like the time, date, weather,
 battery, and how much trtl is trading for.
 
+![alt text](https://raw.githubusercontent.com/Seperot/TrtlWear/master/wear/src/main/res/drawable-nodpi/preview_digital.png)
+
 ## Download
 
 This is where the play store link will go
@@ -11,7 +13,7 @@ This is where the play store link will go
 
 Trtl is the short name for Turtle coin, you can find more info and get involved [from their website](https://turtlecoin.lol/)
 
-## Why is it not showing trading from <name your exchange>
+## Why is it not showing trading from 'name your exchange'
 
 ### It will be one of three things:
 1. I've not grabbed the API yet (Check issues and submit a suggestion if it's not there)
