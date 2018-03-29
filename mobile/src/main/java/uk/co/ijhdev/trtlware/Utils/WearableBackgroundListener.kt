@@ -118,18 +118,18 @@ class WearableBackgroundListener : WearableListenerService() {
         call.enqueue(object : Callback<Fiat.CurrencyRes> {
             override fun onResponse(call: Call<Fiat.CurrencyRes>, response: retrofit2.Response<Fiat.CurrencyRes>?) {
                 if (response != null) {
+                    //TODO: change this value based on currency
                     value = response.body()?.usd?.last!!.toFloat()
                     val oneSat = value / 100000000
+                    //TODO: add maths for how many sats // get the exchanges up
                     val nf = NumberFormat.getInstance()
                     nf.maximumFractionDigits = 6
                     nf.isGroupingUsed = false
                     putDataMapReq.getDataMap().putString("price", "1 trtl = " + response.body()?.usd?.symbol + nf.format(oneSat))
                 }
-
             }
-
             override fun onFailure(call: Call<Fiat.CurrencyRes>, t: Throwable) {
-
+                putDataMapReq.getDataMap().putString("price", "1 trtl = 1 trtl")
             }
         })
     }
