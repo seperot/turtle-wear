@@ -1,6 +1,7 @@
 package uk.co.ijhdev.trtlware.Utils
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.android.gms.wearable.PutDataMapRequest
 import retrofit2.Call
 import retrofit2.Callback
@@ -68,6 +69,10 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                     val nf = NumberFormat.getInstance()
                     nf.maximumFractionDigits = 6
                     nf.isGroupingUsed = false
+                    if(btcval == 0f) {
+                        putDataMapReq?.getDataMap()?.putString("price", "1 trtl = 1 trtl")
+                        return
+                    }
                     putDataMapReq?.getDataMap()?.putString("price", "1 trtl = " + symbolGetter(response) + nf.format(oneSat))
                 }
             }
