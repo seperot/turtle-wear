@@ -7,7 +7,7 @@ battery, and how much trtl is trading for.
 
 ## Download
 
-This is where the play store link will go.
+[Google Play Download](https://play.google.com/store/apps/details?id=uk.co.ijhdev.trtlware)
 
 ## What is a trtl?
 
