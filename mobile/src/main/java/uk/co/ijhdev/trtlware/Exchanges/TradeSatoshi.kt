@@ -35,7 +35,7 @@ class TradeSatoshi {
 
     interface ApiInterface {
         @GET("getticker?market=TRTL_BTC")
-        fun getCategoryDetails(): Call<Results>
+        fun getCategoryDetails(): Call<Connected>
 
         companion object Factory {
             val BASE_URL = "https://tradesatoshi.com/api/public/"

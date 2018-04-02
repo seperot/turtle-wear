@@ -101,13 +101,13 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
     fun TradeSatoshi() {
         val apiService = TradeSatoshi.ApiInterface.create()
         val call = apiService.getCategoryDetails()
-        call.enqueue(object : Callback<TradeSatoshi.Results> {
-            override fun onResponse(call: Call<TradeSatoshi.Results>, response: retrofit2.Response<TradeSatoshi.Results>?) {
+        call.enqueue(object : Callback<TradeSatoshi.Connected> {
+            override fun onResponse(call: Call<TradeSatoshi.Connected>, response: retrofit2.Response<TradeSatoshi.Connected>?) {
                 if (response != null) {
-                    btcval = response?.body()?.last!!.toFloat()
+                    btcval = response.body()?.result?.last!!.toFloat()
                 }
             }
-            override fun onFailure(call: Call<TradeSatoshi.Results>, t: Throwable) {
+            override fun onFailure(call: Call<TradeSatoshi.Connected>, t: Throwable) {
                 btcval = 0f
             }
         })
