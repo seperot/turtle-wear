@@ -1,6 +1,7 @@
 package uk.co.ijhdev.trtlware.Activity
 
 import android.Manifest
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -10,13 +11,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import kotlinx.android.synthetic.main.trtlwear_settings.*
 import uk.co.ijhdev.trtlware.R
 import uk.co.ijhdev.trtlware.Utils.WearableBackgroundListener
-import android.R.attr.label
-import android.content.*
-import android.content.Context.CLIPBOARD_SERVICE
-import android.widget.Toast
 
 
 /**
@@ -46,13 +44,13 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         this.startService(intent)
     }
 
-    fun setDefaults() {
-        currentWeather = "fahrenheit"
+    private fun setDefaults() {
+        currentWeather = getString(R.string.fahrenheit)
         if (prefs!!.getString(tem, "") != null) {
             currentWeather = prefs!!.getString(tem, "")
         }
         if (prefs!!.getString(cur, "") == null) {
-            prefs.edit().putString(cur, "GBP").apply()
+            prefs.edit().putString(cur, resources.getStringArray(R.array.currency_array_main)[1]).apply()
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -60,24 +58,24 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         }
     }
 
-    fun setCurrentVarables() {
+    private fun setCurrentVarables() {
         prefs = this.getSharedPreferences(PREFS_FILENAME, 0)
         currency_spinner.setSelection(currency.getPosition(prefs!!.getString(cur, "")))
         exchange_spinner.setSelection(exchange.getPosition(prefs!!.getString(exc, "")))
-        if (prefs!!.getString(tem, "") == "celsius") {
+        if (prefs!!.getString(tem, "") == getString(R.string.celsius)) {
             toggle_temp.isChecked = true
         } else {
-            prefs.edit().putString(tem, "fahrenheit").apply()
+            prefs.edit().putString(tem, getString(R.string.fahrenheit)).apply()
         }
         setClickListeners()
     }
 
-    fun setClickListeners() {
+    private fun setClickListeners() {
         toggle_temp.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                currentWeather = "celsius"
+                currentWeather = getString(R.string.celsius)
             } else {
-                currentWeather = "fahrenheit"
+                currentWeather = getString(R.string.fahrenheit)
             }
         }
 
@@ -95,7 +93,7 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
     }
 
-    fun setSpinners() {
+    private fun setSpinners() {
         exchange = ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.exchange_array_main))
         currency = ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.currency_array_main))
         exchange_spinner!!.onItemSelectedListener = this
@@ -115,14 +113,14 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         when (item!!.itemId) {
         R.id.btc_tip -> {
-            val clip = ClipData.newPlainText("btc", "38evPaaccTtCa19LbB6z3tEAP9TxGQEQug")
+            val clip = ClipData.newPlainText(getString(R.string.btc), getString(R.string.btcwallet))
             clipboard.primaryClip = clip
-            Toast.makeText(applicationContext, "BTC wallet copied to clipboard", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, getString(R.string.btc) + " " + getString(R.string.wallettoast), Toast.LENGTH_LONG).show()
         }
         R.id.trtl_tip -> {
-            val clip = ClipData.newPlainText("trtl", "TRTLuxmZawF5XvifHMdqTz8RqaaGxzW1r8irH8u4pUQjaJYBm771taf3wa2eeecf1wURraV3FBHWvBBR6WY2puB9fyE5eTTTqzw")
+            val clip = ClipData.newPlainText(getString(R.string.trtl), getString(R.string.trtlwallet))
             clipboard.primaryClip = clip
-            Toast.makeText(applicationContext, "TRTL wallet copied to clipboard", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, getString(R.string.trtl) + " " + getString(R.string.wallettoast), Toast.LENGTH_LONG).show()
 
         }
         }

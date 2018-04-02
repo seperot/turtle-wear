@@ -8,6 +8,7 @@ import retrofit2.Callback
 import uk.co.ijhdev.trtlware.Exchanges.Fiat
 import uk.co.ijhdev.trtlware.Exchanges.TradeOgre
 import uk.co.ijhdev.trtlware.Exchanges.TradeSatoshi
+import uk.co.ijhdev.trtlware.R
 import java.text.NumberFormat
 
 /**
