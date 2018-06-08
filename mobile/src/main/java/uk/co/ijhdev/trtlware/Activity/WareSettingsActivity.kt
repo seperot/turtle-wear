@@ -47,7 +47,7 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     private fun setDefaults() {
         currentWeather = getString(R.string.fahrenheit)
         if (prefs!!.getString(tem, "") != null) {
-            currentWeather = prefs!!.getString(tem, "")
+            currentWeather = prefs.getString(tem, "")
         }
         if (prefs!!.getString(cur, "") == null) {
             prefs.edit().putString(cur, resources.getStringArray(R.array.currency_array_main)[1]).apply()
@@ -60,9 +60,9 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
     private fun setCurrentVarables() {
         prefs = this.getSharedPreferences(PREFS_FILENAME, 0)
-        currency_spinner.setSelection(currency.getPosition(prefs!!.getString(cur, "")))
-        exchange_spinner.setSelection(exchange.getPosition(prefs!!.getString(exc, "")))
-        if (prefs!!.getString(tem, "") == getString(R.string.celsius)) {
+        currency_spinner.setSelection(currency.getPosition(prefs.getString(cur, "")))
+        exchange_spinner.setSelection(exchange.getPosition(prefs.getString(exc, "")))
+        if (prefs.getString(tem, "") == getString(R.string.celsius)) {
             toggle_temp.isChecked = true
         } else {
             prefs.edit().putString(tem, getString(R.string.fahrenheit)).apply()

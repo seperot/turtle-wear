@@ -1,14 +1,13 @@
 package uk.co.ijhdev.trtlware.Utils
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.android.gms.wearable.PutDataMapRequest
 import retrofit2.Call
 import retrofit2.Callback
+import uk.co.ijhdev.trtlware.Exchanges.Altex
 import uk.co.ijhdev.trtlware.Exchanges.Fiat
 import uk.co.ijhdev.trtlware.Exchanges.TradeOgre
 import uk.co.ijhdev.trtlware.Exchanges.TradeSatoshi
-import uk.co.ijhdev.trtlware.R
 import java.text.NumberFormat
 
 /**
@@ -55,6 +54,8 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
         when(prefs!!.getString(exc, "")){
             "TradeOgre" -> TradeOgre()
             "TradeSatoshi" -> TradeSatoshi()
+            "Altex" -> Altex()
+
         }
     }
 
@@ -90,7 +91,7 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
         call.enqueue(object : Callback<TradeOgre.Rates> {
             override fun onResponse(call: Call<TradeOgre.Rates>, response: retrofit2.Response<TradeOgre.Rates>?) {
                 if (response != null) {
-                    btcval = response?.body()?.price!!.toFloat()
+                    btcval = response.body()?.price!!.toFloat()
                 }
             }
             override fun onFailure(call: Call<TradeOgre.Rates>, t: Throwable) {
@@ -109,6 +110,21 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                 }
             }
             override fun onFailure(call: Call<TradeSatoshi.Connected>, t: Throwable) {
+                btcval = 0f
+            }
+        })
+    }
+
+    fun Altex() {
+        val apiService = Altex.ApiInterface.create()
+        val call = apiService.getCategoryDetails()
+        call.enqueue(object : Callback<Altex.Coins> {
+            override fun onResponse(call: Call<Altex.Coins>, response: retrofit2.Response<Altex.Coins>?) {
+                if (response != null) {
+                    btcval = response.body()?.rates?.last!!.toFloat()
+                }
+            }
+            override fun onFailure(call: Call<Altex.Coins>, t: Throwable) {
                 btcval = 0f
             }
         })
