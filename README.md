@@ -1,7 +1,7 @@
 # TrtlWear
 
-Trtlwear is a watchface that tells you all the important things you need, like the time, date, weather,
-battery, and how much trtl is trading for.
+TrtlWear is a watchface that tells you all the important things you need, like the time, date, weather,
+battery, and how much TRTL is trading for.
 
 ![alt text](https://raw.githubusercontent.com/Seperot/TrtlWear/master/wear/src/main/res/drawable-nodpi/preview_digital.png)
 
@@ -9,18 +9,18 @@ battery, and how much trtl is trading for.
 
 [Google Play Download](https://play.google.com/store/apps/details?id=uk.co.ijhdev.trtlware)
 
-## What is a trtl?
+## What is a TRTL?
 
-Trtl is the short name for Turtle coin, you can find more info and get involved [from their website](https://turtlecoin.lol/).
+TRTL is the short name for TurtleCoin, you can find more info and get involved [from their website](https://turtlecoin.lol/).
 
 ## Why is it not showing the trading from 'name your exchange'?
 
 ### It will be one of three things:
 1. I've not grabbed the API yet. (Check [issues](https://github.com/seperot/TrtlWear/issues) and submit a suggestion if it's not there)
-2. They are not trading trtl yet.
+2. They are not trading TRTL yet.
 3. They want to charge for their API.
 
-## The watch says 1 trtl = 1 trtl rather than a price
+## The watch says 1 TRTL = 1 TRTL rather than a price
 
 While this is always the correct answer, it could be that the app hasn't updated the watch yet (It refreshes in 5 min intervals)
 or you could be having network problems. Give it a bit of time and check if you are connected to the internet.
