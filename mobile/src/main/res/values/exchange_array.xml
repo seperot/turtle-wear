@@ -3,5 +3,6 @@
     <string-array name="exchange_array_main">
         <item name="ogre">TradeOgre</item>
         <item name="satoshi">TradeSatoshi</item>
+        <item name="altex">Altex</item>
     </string-array>
 </resources>

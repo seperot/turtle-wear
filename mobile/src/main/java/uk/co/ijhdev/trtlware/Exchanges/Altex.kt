@@ -8,6 +8,10 @@ import retrofit2.http.GET
 
 class Altex {
 
+    class Data {
+        @SerializedName("data")
+        var data: Coins? = null    }
+
     class Coins {
         @SerializedName("BTC_TRTL")
         var rates: Rates? = null    }
@@ -33,7 +37,7 @@ class Altex {
 
     interface ApiInterface {
         @GET("ticker")
-        fun getCategoryDetails(): Call<Coins>
+        fun getCategoryDetails(): Call<Data>
 
         companion object Factory {
             val BASE_URL = "https://api.altex.exchange/v1/"

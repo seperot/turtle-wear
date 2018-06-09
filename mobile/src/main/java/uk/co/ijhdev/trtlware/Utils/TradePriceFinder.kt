@@ -1,6 +1,7 @@
 package uk.co.ijhdev.trtlware.Utils
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.android.gms.wearable.PutDataMapRequest
 import retrofit2.Call
 import retrofit2.Callback
@@ -68,18 +69,23 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                 if (response != null) {
                     value = currencySelector(response)
                     val oneSat = btcval * value
+                    Log.d("HUH", oneSat.toString())
+
                     val nf = NumberFormat.getInstance()
                     nf.maximumFractionDigits = 6
                     nf.isGroupingUsed = false
                     if(btcval == 0f) {
                         putDataMapReq?.getDataMap()?.putString("price", "1 trtl = 1 trtl")
+                        Log.d("PRICE", "Price 0")
                         return
                     }
                     putDataMapReq?.getDataMap()?.putString("price", "1 trtl = " + symbolGetter(response) + nf.format(oneSat))
+                    Log.d("PRICE", symbolGetter(response) + nf.format(oneSat))
                 }
             }
             override fun onFailure(call: Call<Fiat.CurrencyRes>, t: Throwable) {
                 putDataMapReq?.getDataMap()?.putString("price", "1 trtl = 1 trtl")
+                Log.d("PRICE", "Failed to collect price")
             }
         })
     }
@@ -118,13 +124,14 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
     fun Altex() {
         val apiService = Altex.ApiInterface.create()
         val call = apiService.getCategoryDetails()
-        call.enqueue(object : Callback<Altex.Coins> {
-            override fun onResponse(call: Call<Altex.Coins>, response: retrofit2.Response<Altex.Coins>?) {
+        call.enqueue(object : Callback<Altex.Data> {
+            override fun onResponse(call: Call<Altex.Data>, response: retrofit2.Response<Altex.Data>?) {
                 if (response != null) {
-                    btcval = response.body()?.rates?.last!!.toFloat()
+                    Log.d("DOG", response.body()?.data!!.rates?.last!!.toString())
+                    btcval = response.body()?.data!!.rates?.last!!.toFloat()
                 }
             }
-            override fun onFailure(call: Call<Altex.Coins>, t: Throwable) {
+            override fun onFailure(call: Call<Altex.Data>, t: Throwable) {
                 btcval = 0f
             }
         })
