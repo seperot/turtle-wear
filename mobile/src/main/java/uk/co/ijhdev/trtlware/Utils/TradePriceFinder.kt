@@ -122,14 +122,12 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
     fun KuCoin() {
         val apiService = KuCoin.ApiInterface.create()
         val call = apiService.getCategoryDetails()
-        call.enqueue(object : Callback<KuCoin.Rates> {
-            override fun onResponse(call: Call<KuCoin.Rates>, response: retrofit2.Response<KuCoin.Rates>?) {
-                if (response != null) {
-                    btcval = response.body()?.price!!.toFloat()
-                }
+        call.enqueue(object : Callback<KuCoin.Data> {
+            override fun onResponse(call: Call<KuCoin.Data>, response: retrofit2.Response<KuCoin.Data>?) {
+                btcval = response?.body()?.data?.last!!.toFloat()
             }
 
-            override fun onFailure(call: Call<KuCoin.Rates>, t: Throwable) {
+            override fun onFailure(call: Call<KuCoin.Data>, t: Throwable) {
                 btcval = 0f
             }
         })

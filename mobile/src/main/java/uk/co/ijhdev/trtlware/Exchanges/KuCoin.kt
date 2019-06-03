@@ -12,27 +12,43 @@ import retrofit2.http.GET
 
 class KuCoin {
 
-    class Rates {
+    class Data {
+        @SerializedName("code")
+        var code: String? = null
+        @SerializedName("data")
+        var data: Rates? = null
+    }
 
-        @SerializedName("initialprice")
-        var initialprice: String? = null
-        @SerializedName("last")
-        var price: String? = null
+    class Rates {
+        @SerializedName("symbol")
+        var symbol: String? = null
         @SerializedName("high")
         var high: String? = null
-        @SerializedName("low")
-        var low: String? = null
         @SerializedName("vol")
         var volume: String? = null
+        @SerializedName("last")
+        var last: String? = null
+        @SerializedName("low")
+        var low: String? = null
         @SerializedName("buy")
-        var bid: String? = null
+        var buy: String? = null
         @SerializedName("sell")
-        var ask: String? = null
+        var sell: String? = null
+        @SerializedName("changePrice")
+        var changePrice: String? = null
+        @SerializedName("averagePrice")
+        var averagePrice: String? = null
+        @SerializedName("time")
+        var time: String? = null
+        @SerializedName("changeRate")
+        var changeRate: String? = null
+        @SerializedName("volValue")
+        var volValue: String? = null
     }
 
     interface ApiInterface {
         @GET("market/stats?symbol=TRTL-BTC")
-        fun getCategoryDetails(): Call<Rates>
+        fun getCategoryDetails(): Call<Data>
 
         companion object Factory {
             val BASE_URL = "https://openapi-v2.kucoin.com/api/v1/"
