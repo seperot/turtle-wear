@@ -5,10 +5,7 @@ import android.util.Log
 import com.google.android.gms.wearable.PutDataMapRequest
 import retrofit2.Call
 import retrofit2.Callback
-import uk.co.ijhdev.trtlware.Exchanges.Altex
-import uk.co.ijhdev.trtlware.Exchanges.Fiat
-import uk.co.ijhdev.trtlware.Exchanges.TradeOgre
-import uk.co.ijhdev.trtlware.Exchanges.TradeSatoshi
+import uk.co.ijhdev.trtlware.Exchanges.*
 import java.text.NumberFormat
 
 /**
@@ -18,19 +15,18 @@ import java.text.NumberFormat
 
 class TradePriceFinder(val cur : String? = null, val exc : String? = null, val prefs: SharedPreferences? = null, val putDataMapReq: PutDataMapRequest? = null) {
 
-    var btcval : Float = 0f
+    var btcval: Float = 0f
 
     fun getValue() {
-        if(prefs!!.getString(cur, "") != "BTC") {
+        if (prefs?.getString(cur, "") != "BTC") {
             fiatPrice()
-        }
-        else {
+        } else {
             putDataMapReq?.getDataMap()?.putString("price", "1 trtl = BTC " + btcval)
         }
     }
 
-    fun currencySelector(response: retrofit2.Response<Fiat.CurrencyRes>?) : Float {
-        when(prefs!!.getString(cur, "")){
+    fun currencySelector(response: retrofit2.Response<Fiat.CurrencyRes>?): Float {
+        when (prefs?.getString(cur, "")) {
             "USD" -> return response?.body()?.usd?.last!!.toFloat()
             "GBP" -> return response?.body()?.gbp?.last!!.toFloat()
             "CAD" -> return response?.body()?.cad?.last!!.toFloat()
@@ -40,8 +36,8 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
         return response?.body()?.usd?.last!!.toFloat()
     }
 
-    fun symbolGetter(response: retrofit2.Response<Fiat.CurrencyRes>?) : String? {
-        when(prefs!!.getString(cur, "")){
+    fun symbolGetter(response: retrofit2.Response<Fiat.CurrencyRes>?): String? {
+        when (prefs?.getString(cur, "")) {
             "USD" -> return response?.body()?.usd?.symbol
             "GBP" -> return response?.body()?.gbp?.symbol
             "CAD" -> return response?.body()?.cad?.symbol
@@ -52,15 +48,14 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
     }
 
     fun getExchangeValue() {
-        when(prefs!!.getString(exc, "")){
+        when (prefs?.getString(exc, "")) {
             "TradeOgre" -> TradeOgre()
             "TradeSatoshi" -> TradeSatoshi()
-            "Altex" -> Altex()
-
+            "KuCoin" -> KuCoin()
         }
     }
 
-    fun fiatPrice ()  {
+    fun fiatPrice() {
         val apiService = Fiat.ApiInterface.create()
         val call = apiService.getCategoryDetails()
         var value: Float
@@ -74,7 +69,7 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                     val nf = NumberFormat.getInstance()
                     nf.maximumFractionDigits = 6
                     nf.isGroupingUsed = false
-                    if(btcval == 0f) {
+                    if (btcval == 0f) {
                         putDataMapReq?.getDataMap()?.putString("price", "1 trtl = 1 trtl")
                         Log.d("PRICE", "Price 0")
                         return
@@ -83,6 +78,7 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                     Log.d("PRICE", symbolGetter(response) + nf.format(oneSat))
                 }
             }
+
             override fun onFailure(call: Call<Fiat.CurrencyRes>, t: Throwable) {
                 putDataMapReq?.getDataMap()?.putString("price", "1 trtl = 1 trtl")
                 Log.d("PRICE", "Failed to collect price")
@@ -100,6 +96,7 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                     btcval = response.body()?.price!!.toFloat()
                 }
             }
+
             override fun onFailure(call: Call<TradeOgre.Rates>, t: Throwable) {
                 btcval = 0f
             }
@@ -115,26 +112,26 @@ class TradePriceFinder(val cur : String? = null, val exc : String? = null, val p
                     btcval = response.body()?.result?.last!!.toFloat()
                 }
             }
+
             override fun onFailure(call: Call<TradeSatoshi.Connected>, t: Throwable) {
                 btcval = 0f
             }
         })
     }
 
-    fun Altex() {
-        val apiService = Altex.ApiInterface.create()
+    fun KuCoin() {
+        val apiService = KuCoin.ApiInterface.create()
         val call = apiService.getCategoryDetails()
-        call.enqueue(object : Callback<Altex.Data> {
-            override fun onResponse(call: Call<Altex.Data>, response: retrofit2.Response<Altex.Data>?) {
+        call.enqueue(object : Callback<KuCoin.Rates> {
+            override fun onResponse(call: Call<KuCoin.Rates>, response: retrofit2.Response<KuCoin.Rates>?) {
                 if (response != null) {
-                    Log.d("DOG", response.body()?.data!!.rates?.last!!.toString())
-                    btcval = response.body()?.data!!.rates?.last!!.toFloat()
+                    btcval = response.body()?.price!!.toFloat()
                 }
             }
-            override fun onFailure(call: Call<Altex.Data>, t: Throwable) {
+
+            override fun onFailure(call: Call<KuCoin.Rates>, t: Throwable) {
                 btcval = 0f
             }
         })
     }
-
 }
