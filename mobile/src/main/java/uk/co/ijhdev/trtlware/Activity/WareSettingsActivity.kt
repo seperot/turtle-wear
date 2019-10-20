@@ -46,10 +46,10 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
     private fun setDefaults() {
         currentWeather = getString(R.string.fahrenheit)
-        if (prefs!!.getString(tem, "") != null) {
-            currentWeather = prefs.getString(tem, "")
+        prefs.getString(tem, "")?.let {
+            currentWeather = it
         }
-        if (prefs!!.getString(cur, "") == null) {
+        if (prefs.getString(cur, "") == null) {
             prefs.edit().putString(cur, resources.getStringArray(R.array.currency_array_main)[1]).apply()
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -96,12 +96,12 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     private fun setSpinners() {
         exchange = ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.exchange_array_main))
         currency = ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.currency_array_main))
-        exchange_spinner!!.onItemSelectedListener = this
-        currency_spinner!!.onItemSelectedListener = this
+        exchange_spinner.onItemSelectedListener = this
+        currency_spinner.onItemSelectedListener = this
         exchange.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         currency.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        exchange_spinner!!.adapter = exchange
-        currency_spinner!!.adapter = currency
+        exchange_spinner.adapter = exchange
+        currency_spinner.adapter = currency
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -110,19 +110,19 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        when (item!!.itemId) {
-        R.id.btc_tip -> {
-            val clip = ClipData.newPlainText(getString(R.string.btc), getString(R.string.btcwallet))
-            clipboard.primaryClip = clip
-            Toast.makeText(applicationContext, getString(R.string.btc) + " " + getString(R.string.wallettoast), Toast.LENGTH_LONG).show()
-        }
-        R.id.trtl_tip -> {
-            val clip = ClipData.newPlainText(getString(R.string.trtl), getString(R.string.trtlwallet))
-            clipboard.primaryClip = clip
-            Toast.makeText(applicationContext, getString(R.string.trtl) + " " + getString(R.string.wallettoast), Toast.LENGTH_LONG).show()
+        val clipboard : ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        when (item?.itemId) {
+            R.id.btc_tip -> {
+                val clip = ClipData.newPlainText(getString(R.string.btc), getString(R.string.btcwallet))
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(applicationContext, getString(R.string.btc) + " " + getString(R.string.wallettoast), Toast.LENGTH_LONG).show()
+            }
+            R.id.trtl_tip -> {
+                val clip = ClipData.newPlainText(getString(R.string.trtl), getString(R.string.trtlwallet))
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(applicationContext, getString(R.string.trtl) + " " + getString(R.string.wallettoast), Toast.LENGTH_LONG).show()
 
-        }
+            }
         }
         return true
     }
