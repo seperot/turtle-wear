@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.os.Handler
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.awareness.Awareness
 import com.google.android.gms.awareness.state.Weather
 import com.google.android.gms.common.api.GoogleApiClient
