@@ -18,3 +18,5 @@ gradle-app.setting
 *.iml
 
 \.DS_Store
+
+mobile/google-services\.json
