@@ -55,7 +55,6 @@ class WearableBackgroundListener : WearableListenerService() {
     }
 
     private fun runTradeUpdate() {
-        tradePriceFinder.getExchangeValue()
         tradePriceFinder.getValue()
         handler.postDelayed(runnableTrade, web_updates_timer)
     }
