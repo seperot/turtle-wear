@@ -2,10 +2,6 @@
 <resources>
     <string-array name="currency_array_main">
         <item name="USD">USD</item>
-        <item name="GBP">GBP</item>
-        <item name="CAD">CAD</item>
-        <item name="EUR">EUR</item>
-        <item name="RUB">RUB</item>
         <item name="BTC">BTC</item>
     </string-array>
 </resources>

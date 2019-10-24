@@ -24,12 +24,9 @@ import uk.co.ijhdev.trtlware.Utils.WearableBackgroundListener
 class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     val PREFS_FILENAME = "uk.co.ijhdev.trtlware.prefs"
-    val cur = "currency"
-    val exc = "exchange"
-    val tem = "temperature"
-    lateinit var exchange: ArrayAdapter<String>
+    private val cur = "currency"
+    private val tem = "temperature"
     lateinit var currency: ArrayAdapter<String>
-    lateinit var currentExchange: String
     lateinit var currentCurrency: String
     lateinit var currentWeather: String
     lateinit var prefs: SharedPreferences
@@ -61,7 +58,6 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     private fun setCurrentVarables() {
         prefs = this.getSharedPreferences(PREFS_FILENAME, 0)
         currency_spinner.setSelection(currency.getPosition(prefs.getString(cur, "")))
-        exchange_spinner.setSelection(exchange.getPosition(prefs.getString(exc, "")))
         if (prefs.getString(tem, "") == getString(R.string.celsius)) {
             toggle_temp.isChecked = true
         } else {
@@ -80,9 +76,6 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         }
 
         save_button.setOnClickListener {
-            if (currentExchange != null) {
-                prefs.edit().putString(exc, currentExchange).apply()
-            }
             if (currentCurrency != null) {
                 prefs.edit().putString(cur, currentCurrency).apply()
             }
@@ -94,13 +87,9 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     }
 
     private fun setSpinners() {
-        exchange = ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.exchange_array_main))
         currency = ArrayAdapter(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.currency_array_main))
-        exchange_spinner.onItemSelectedListener = this
         currency_spinner.onItemSelectedListener = this
-        exchange.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         currency.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        exchange_spinner.adapter = exchange
         currency_spinner.adapter = currency
     }
 
@@ -130,10 +119,8 @@ class WareSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     override fun onNothingSelected(p0: AdapterView<*>?) { }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        if (p0 == exchange_spinner) {
-            currentExchange = resources.getStringArray(R.array.exchange_array_main).get(p2)
-        } else if (p0 == currency_spinner) {
-            currentCurrency = resources.getStringArray(R.array.currency_array_main).get(p2)
+        if (p0 == currency_spinner) {
+            currentCurrency = resources.getStringArray(R.array.currency_array_main)[p2]
         }
     }
 
