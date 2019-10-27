@@ -1,4 +1,4 @@
-# TrtlWear
+# Turtle Wear
 [![Build Status](https://app.bitrise.io/app/871f631049735080/status.svg?token=n_DQ0VQHPnw8cXNTHLX4Ag&branch=master)](https://app.bitrise.io/app/871f631049735080)
 
 TrtlWear is a watchface that tells you all the important things you need, like the time, date, weather,
