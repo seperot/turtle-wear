@@ -11,6 +11,7 @@ import com.google.android.gms.awareness.Awareness
 import com.google.android.gms.awareness.state.Weather
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.wearable.*
+import uk.co.ijhdev.trtlware.Activity.WareSettingsActivity
 import uk.co.ijhdev.trtlware.R
 import kotlin.math.roundToInt
 
@@ -19,27 +20,25 @@ import kotlin.math.roundToInt
  */
 
 class WearableBackgroundListener : WearableListenerService() {
-    lateinit var googleApiClient: GoogleApiClient
-    val putDataMapReq = PutDataMapRequest.create("/trtlwear")
-    lateinit var prefs: SharedPreferences
-    val PREFS_FILENAME = "uk.co.ijhdev.trtlware.prefs"
-    val cur = "currency"
-    val exc = "exchange"
-    val tem = "temperature"
-    var tradePriceFinder = TradePriceFinder()
-    val local_updates_timer : Long = 60000
-    val web_updates_timer : Long = 600000
+    private lateinit var googleApiClient: GoogleApiClient
+    private val putDataMapReq = PutDataMapRequest.create("/trtlwear")
+    private lateinit var prefs: SharedPreferences
+    private val prefsFilename = "uk.co.ijhdev.trtlware.prefs"
+    private val tem = "temperature"
+    private var tradePriceFinder = TradePriceFinder()
+    private val localUpdatesTimer : Long = 60000
+    private val webUpdatesTimer : Long = 600000
 
 
     override fun onCreate() {
         super.onCreate()
-        prefs = this.getSharedPreferences(PREFS_FILENAME, 0)
+        prefs = this.getSharedPreferences(prefsFilename, 0)
         googleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addApi(Awareness.API)
                 .build()
         googleApiClient.connect()
-        tradePriceFinder = TradePriceFinder(cur,exc,prefs,putDataMapReq)
+        tradePriceFinder = TradePriceFinder()
         runUpdates()
         runTradeUpdate()
     }
@@ -51,13 +50,12 @@ class WearableBackgroundListener : WearableListenerService() {
     private fun runUpdates() {
         getBatteryLevel()
         getWeather()
-        handler.postDelayed(runnable, local_updates_timer)
+        handler.postDelayed(runnable, localUpdatesTimer)
     }
 
     private fun runTradeUpdate() {
-        tradePriceFinder.getExchangeValue()
-        tradePriceFinder.getValue()
-        handler.postDelayed(runnableTrade, web_updates_timer)
+        putDataMapReq.dataMap.putString("price", "1 trtl = " + prefs.getString(WareSettingsActivity.ARG_CURRENCY, "")?.let { tradePriceFinder.getValue(it)})
+        handler.postDelayed(runnableTrade, webUpdatesTimer)
     }
 
     override fun onDataChanged(dataEvents: DataEventBuffer?) {
@@ -65,8 +63,8 @@ class WearableBackgroundListener : WearableListenerService() {
 
     private fun getBatteryLevel() {
         val bm = getSystemService(AppCompatActivity.BATTERY_SERVICE) as BatteryManager
-        var batLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-        putDataMapReq.getDataMap().putString("Bat_Power", batLevel.toString() + " %")
+        val batLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+        putDataMapReq.dataMap.putString("Bat_Power", "$batLevel %")
         val putDataReq = putDataMapReq.asPutDataRequest()
         Wearable.DataApi.putDataItem(googleApiClient, putDataReq)
     }
@@ -80,11 +78,11 @@ class WearableBackgroundListener : WearableListenerService() {
                             val weather = weatherResult.weather
                             val conditions = weather.conditions
                             var temperature = weather.getTemperature(Weather.FAHRENHEIT).roundToInt().toString() + "f"
-                            if (prefs!!.getString(tem, "") == getString(R.string.celsius)) {
+                            if (prefs.getString(tem, "") == getString(R.string.celsius)) {
                                 temperature = weather.getTemperature(Weather.CELSIUS).roundToInt().toString() + "c"
                             }
-                            putDataMapReq.getDataMap().putString("weather_temp", temperature)
-                            putDataMapReq.getDataMap().putString("weather_type",  conditions[0].toString ())
+                            putDataMapReq.dataMap.putString("weather_temp", temperature)
+                            putDataMapReq.dataMap.putString("weather_type",  conditions[0].toString ())
                             val putDataReq = putDataMapReq.asPutDataRequest()
                             Wearable.DataApi.putDataItem(googleApiClient, putDataReq)
                         }
@@ -93,8 +91,5 @@ class WearableBackgroundListener : WearableListenerService() {
         }
     }
 
-    override fun onMessageReceived(messageEvent: MessageEvent?) {
-
-    }
-    companion object
+    override fun onMessageReceived(messageEvent: MessageEvent?) {/* not used */}
 }
