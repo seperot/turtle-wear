@@ -49,8 +49,8 @@ class TrtlFace : CanvasWatchFaceService() {
         return Engine()
     }
 
-    private class EngineHandler(reference: TrtlFace.Engine) : Handler() {
-        private val mWeakReference: WeakReference<TrtlFace.Engine> = WeakReference(reference)
+    private class EngineHandler(reference: Engine) : Handler() {
+        private val mWeakReference: WeakReference<Engine> = WeakReference(reference)
 
         override fun handleMessage(msg: Message) {
             val engine = mWeakReference.get()
@@ -65,21 +65,12 @@ class TrtlFace : CanvasWatchFaceService() {
     inner class Engine : CanvasWatchFaceService.Engine(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
         lateinit var googleApiClient : GoogleApiClient
-
         private lateinit var mCalendar: Calendar
-
         private var mRegisteredTimeZoneReceiver = false
-
         private var mXOffset: Float = 0F
         private var mYOffset: Float = 0F
-
-        private lateinit var mBackgroundPaint: Paint
-        private lateinit var mTextPaint: Paint
-
         private var mLowBitAmbient: Boolean = false
         private var mBurnInProtection: Boolean = false
-        private var mAmbient: Boolean = false
-
         private val mUpdateTimeHandler: Handler = EngineHandler(this)
 
         private val mTimeZoneReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -173,10 +164,8 @@ class TrtlFace : CanvasWatchFaceService() {
         }
 
         override fun onDraw(canvas: Canvas, bounds: Rect) {
-
             setTimeandDate()
             setWatchBattery()
-
 
             watchLayout.measure(specW, specH);
             watchLayout.layout(0, 0, watchLayout.measuredWidth, watchLayout.measuredHeight)
