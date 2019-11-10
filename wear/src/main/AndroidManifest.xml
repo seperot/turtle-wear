@@ -17,8 +17,9 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
+
         <service
-            android:name=".TrtlFace"
+            android:name=".Watchface.TurtleFace"
             android:label="@string/my_digital_name"
             android:permission="android.permission.BIND_WALLPAPER">
             <meta-data
@@ -30,9 +31,6 @@
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
                 android:resource="@drawable/preview_digital_circular" />
-            <meta-data
-                android:name="com.google.android.wearable.watchface.companionConfigurationAction"
-                android:value="uk.co.ijhdev.trtlware.CONFIG_DIGITAL" />
 
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />

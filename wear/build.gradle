@@ -22,6 +22,9 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildToolsVersion = '28.0.3'
 }
 
@@ -31,6 +34,11 @@ dependencies {
     implementation 'com.google.android.support:wearable:2.5.0'
     implementation 'com.google.android.gms:play-services-wearable:17.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation "com.google.android.gms:play-services-awareness:17.1.0"
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.firebase:firebase-perf:19.0.1'
+    implementation 'com.google.android.material:material:1.0.0'
     compileOnly 'com.google.android.wearable:wearable:2.5.0'
     //androidx
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
@@ -38,4 +46,11 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.wear:wear:1.0.0'
+    implementation "androidx.work:work-runtime-ktx:2.2.0"
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    //testing
+    testImplementation 'junit:junit:4.12'
 }

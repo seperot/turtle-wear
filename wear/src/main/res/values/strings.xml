@@ -2,4 +2,11 @@
     <string name="app_name">Turtle Ware</string>
     <string name="message">Watch face tapped</string>
     <string name="my_digital_name">Turtle Ware</string>
+    <string name="btc">btc</string>
+    <string name="btcwallet">1M2KoDNHZp2kaZuhiFEWbNuLjY6hgJ5V6b</string>
+    <string name="wallettoast">wallet copied to clipboard</string>
+    <string name="trtl">trtl</string>
+    <string name="trtlwallet">TRTLuxmZawF5XvifHMdqTz8RqaaGxzW1r8irH8u4pUQjaJYBm771taf3wa2eeecf1wURraV3FBHWvBBR6WY2puB9fyE5eTTTqzw</string>
+    <string name="fahrenheit">fahrenheit</string>
+    <string name="celsius">celsius</string>
 </resources>
