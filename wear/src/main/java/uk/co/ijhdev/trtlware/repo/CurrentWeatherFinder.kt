@@ -28,8 +28,8 @@ class CurrentWeatherFinder {
 
           override fun onResponse(call: Call<Weather.WeatherValues>?, response: Response<Weather.WeatherValues>?) {
               response?.body()?.let {
-                  weatherString = it.icon
-                  tempString = it.temp
+                  weatherString = "w" + it.icon
+                  tempString = it.temp + " °C"
               }
           }
       })

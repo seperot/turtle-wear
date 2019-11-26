@@ -15,7 +15,7 @@ battery, and how much TRTL is trading for.
 TRTL is the short name for TurtleCoin, you can find more info and get involved [from their website](https://turtlecoin.lol/).
 
 ## The watch says 1 TRTL = 1 TRTL rather than a price
-While this is always the correct answer, it could be that the app hasn't updated the watch yet (It refreshes in 5 min intervals)
+While this is always the correct answer, it could be that the app hasn't updated the watch yet (It refreshes in 20 min intervals)
 or you could be having network problems. Give it a bit of time and check if you are connected to the internet.
 
 ## Why is **X** feature not added? Check [issues](https://github.com/seperot/TrtlWear/issues) and submit a suggestion if it's not there
