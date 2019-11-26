@@ -146,12 +146,9 @@ class TurtleFace : CanvasWatchFaceService() {
 
     override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
       when (tapType) {
-        WatchFaceService.TAP_TYPE_TOUCH -> {
-        }
-        WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {
-        }
-        WatchFaceService.TAP_TYPE_TAP -> {
-        }
+        WatchFaceService.TAP_TYPE_TOUCH -> {/* unused */}
+        WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {/* unused */}
+        WatchFaceService.TAP_TYPE_TAP -> {/* unused */}
       }
       invalidate()
     }

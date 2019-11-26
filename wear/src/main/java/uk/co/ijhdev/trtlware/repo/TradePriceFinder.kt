@@ -27,10 +27,11 @@ class TradePriceFinder {
 
           override fun onResponse(call: Call<Prices.CurrencyValues>?, response: Response<Prices.CurrencyValues>?) {
             response?.body()?.let {
+              val trtl = "1 trtl = "
               currentString = when (type) {
-                "BTC" -> "1 trtl = " + it.btc
-                "USD" -> "1 trtl = " + it.usd
-                else -> "1 trtl = " + it.btc
+                "BTC" -> trtl + it.btc
+                "USD" -> trtl + it.usd
+                else -> trtl + it.btc
               }
             }
           }
