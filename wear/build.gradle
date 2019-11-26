@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -8,7 +10,7 @@ android {
         applicationId "uk.co.ijhdev.trtlware"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 10
+        versionCode 20
         versionName "2.0.0"
         multiDexEnabled true
     }

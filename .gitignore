@@ -22,3 +22,5 @@ gradle-app.setting
 mobile/google-services\.json
 
 local.properties
+
+wear/google-services.json
