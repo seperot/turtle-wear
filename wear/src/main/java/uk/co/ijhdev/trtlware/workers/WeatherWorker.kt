@@ -1,7 +1,11 @@
 package uk.co.ijhdev.trtlware.workers
 
 import android.content.SharedPreferences
+import android.os.Handler
+import android.os.Looper
 import com.google.android.gms.common.api.GoogleApiClient
+import uk.co.ijhdev.trtlware.repo.CurrentWeatherFinder
+import uk.co.ijhdev.trtlware.repo.TradePriceFinder
 
 /**
  * Created by Seperot on 28/03/2018.
@@ -9,26 +13,22 @@ import com.google.android.gms.common.api.GoogleApiClient
 
 class WeatherWorker {
 
-  private lateinit var googleApiClient: GoogleApiClient
-  private lateinit var prefs: SharedPreferences
-  private val tem = "temperature"
+  private var currentWeatherFinder = CurrentWeatherFinder()
+  private val mainHandler = Handler(Looper.getMainLooper())
 
-  fun getWeather(): String {
-//    Awareness.SnapshotApi.getWeather(googleApiClient).setResultCallback { weatherResult ->
-//      if (weatherResult.status.isSuccess) {
-//        val weather = weatherResult.weather
-//        val conditions = weather.conditions
-//        var temperature = weather.getTemperature(Weather.FAHRENHEIT).roundToInt().toString() + "f"
-//        if (prefs.getString(tem, "") == "celsius") {
-//          temperature = weather.getTemperature(Weather.CELSIUS).roundToInt().toString() + "c"
-//        }
-//      }
-//    }
-    return "12"
+  fun getWeather() {
+    mainHandler.post(object : Runnable {
+      override fun run() {
+        currentWeatherFinder.getWeatherValues("12", "-12")
+        mainHandler.postDelayed(this, 1200000)
+      }
+    })
   }
 
   companion object {
     const val RETURN_WEATHER = "weather"
     const val ARG_TEMPERATURE = "temperature"
+    var weatherString : String? = "clouds"
+    var tempString : String? = "14"
   }
 }

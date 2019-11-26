@@ -20,8 +20,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import uk.co.ijhdev.trtlware.R
 import uk.co.ijhdev.trtlware.workers.PhoneBatteryWorker
-import uk.co.ijhdev.trtlware.workers.TrtlPriceWorker
+import uk.co.ijhdev.trtlware.workers.TurtlePriceWorker
 import uk.co.ijhdev.trtlware.workers.WeatherWorker
+import uk.co.ijhdev.trtlware.workers.WeatherWorker.Companion.tempString
+import uk.co.ijhdev.trtlware.workers.WeatherWorker.Companion.weatherString
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
@@ -130,9 +132,9 @@ class TurtleFace : CanvasWatchFaceService(){
         logo.setImageResource(R.drawable.logo_white)
       }
       else {
-        setTrtlPrice(TrtlPriceWorker().runTradeUpdate())
-        setWeather(WeatherWorker().getWeather())
         setPhoneBattery(PhoneBatteryWorker().getBatteryLevel(this@TurtleFace.applicationContext))
+        setTrtlPrice()
+        setWeather()
         bottomLeft.visibility = View.VISIBLE
         bottomRight.visibility = View.VISIBLE
         topLeft.visibility = View.VISIBLE
@@ -157,7 +159,8 @@ class TurtleFace : CanvasWatchFaceService(){
     override fun onDraw(canvas: Canvas, bounds: Rect) {
       setTimeandDate()
       setWatchBattery()
-
+      TurtlePriceWorker().runTradeUpdate()
+      WeatherWorker().getWeather()
       watchLayout.measure(specW, specH)
       watchLayout.layout(0, 0, watchLayout.measuredWidth, watchLayout.measuredHeight)
       canvas.save()
@@ -190,18 +193,18 @@ class TurtleFace : CanvasWatchFaceService(){
       phone.text =  phoneBat
     }
 
-    private fun setWeather(temp : String?) {
+    private fun setWeather() {
       val temperature : TextView = watchLayout.findViewById(R.id.temp_number)
-      temperature.text = temp
-      //val id = resources.getIdentifier("w$weather", "drawable", packageName)
-      // val drawable = resources.getDrawable(id, null)
-      // val weatherIco : ImageView = watchLayout.findViewById(R.id.weather_ico)
-      // weatherIco.setImageDrawable(drawable)
+      temperature.text = tempString
+       //val id = resources.getIdentifier("w$weatherString", "drawable", packageName)
+       //val drawable = resources.getDrawable(id, null)
+       //val weatherIco : ImageView = watchLayout.findViewById(R.id.weather_ico)
+       //weatherIco.setImageDrawable(drawable)
     }
 
-    private fun setTrtlPrice(pricePoint: String?) {
+    private fun setTrtlPrice() {
       val price : TextView = watchLayout.findViewById(R.id.price_ticker)
-      price.text =  pricePoint
+      price.text =  TurtlePriceWorker.currentString
     }
 
     override fun onVisibilityChanged(visible: Boolean) {

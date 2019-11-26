@@ -37,20 +37,20 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation "com.google.android.gms:play-services-awareness:17.1.0"
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.google.firebase:firebase-perf:19.0.1'
+    implementation 'com.google.firebase:firebase-perf:19.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     compileOnly 'com.google.android.wearable:wearable:2.5.0'
     //androidx
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.wear:wear:1.0.0'
     implementation "androidx.work:work-runtime-ktx:2.2.0"
 
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     //testing
     testImplementation 'junit:junit:4.12'
 }

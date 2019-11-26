@@ -1,7 +1,11 @@
 package uk.co.ijhdev.trtlware.repo
 
+import android.util.Log
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uk.co.ijhdev.trtlware.network.Prices
+import uk.co.ijhdev.trtlware.workers.TurtlePriceWorker.Companion.currentString
 
 /**
  * Created by Seperot on 26/03/2018.
@@ -14,17 +18,24 @@ class TradePriceFinder {
     return help
   }
 
-  fun getValue(type : String) : String? {
+  fun getValue(type : String) {
     try {
-        val prefs = getLatestValues().execute()
-        prefs?.body()?.let {
-          return when (type) {
-            "BTC" -> it.btc
-            "USD" -> it.usd
-            else -> it.btc
+        getLatestValues().enqueue(object : Callback<Prices.CurrencyValues> {
+          override fun onFailure(call: Call<Prices.CurrencyValues>?, t: Throwable?) {
+            Log.v("retrofit", "price call failed")
           }
-        }
+
+          override fun onResponse(call: Call<Prices.CurrencyValues>?, response: Response<Prices.CurrencyValues>?) {
+            response?.body()?.let {
+              currentString = when (type) {
+                "BTC" -> "1 trtl = " + it.btc
+                "USD" -> "1 trtl = " + it.usd
+                else -> "1 trtl = " + it.btc
+              }
+            }
+          }
+        })
     } catch (exception : Exception) { /*not used */}
-    return "1 trtl"
+    currentString = "1 trtl = 1 trtl"
   }
 }

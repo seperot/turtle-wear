@@ -26,9 +26,9 @@ class Prices {
             private const val BASE_URL = "http://api.ijhdev.co.uk"
             fun create(): GetCurrency {
                 val retrofit = Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
                 return retrofit.create(GetCurrency::class.java)
             }
         }
