@@ -1,4 +1,4 @@
-package uk.co.ijhdev.trtlware.Exchanges
+package uk.co.ijhdev.trtlware.network
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
@@ -19,11 +19,11 @@ class Prices {
     }
 
     interface GetCurrency {
-        @GET(":3000")
+        @GET("/coin")
          fun getAllCurrency(): Call<CurrencyValues>
 
         companion object Factory {
-            private const val BASE_URL = "localhost"
+            private const val BASE_URL = "http://api.ijhdev.co.uk"
             fun create(): GetCurrency {
                 val retrofit = Retrofit.Builder()
                         .baseUrl(BASE_URL)

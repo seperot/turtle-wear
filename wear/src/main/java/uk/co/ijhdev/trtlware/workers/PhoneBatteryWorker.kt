@@ -1,4 +1,4 @@
-package uk.co.ijhdev.trtlware.Workers
+package uk.co.ijhdev.trtlware.workers
 
 import android.content.Context
 import android.os.BatteryManager

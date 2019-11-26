@@ -1,4 +1,4 @@
-package uk.co.ijhdev.trtlware.Watchface
+package uk.co.ijhdev.trtlware.watchface
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -19,9 +19,9 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import uk.co.ijhdev.trtlware.R
-import uk.co.ijhdev.trtlware.Workers.PhoneBatteryWorker
-import uk.co.ijhdev.trtlware.Workers.TrtlPriceWorker
-import uk.co.ijhdev.trtlware.Workers.WeatherWorker
+import uk.co.ijhdev.trtlware.workers.PhoneBatteryWorker
+import uk.co.ijhdev.trtlware.workers.TrtlPriceWorker
+import uk.co.ijhdev.trtlware.workers.WeatherWorker
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
