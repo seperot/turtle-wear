@@ -20,3 +20,7 @@ gradle-app.setting
 \.DS_Store
 
 mobile/google-services\.json
+
+local.properties
+
+wear/google-services.json
