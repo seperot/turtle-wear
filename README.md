@@ -1,7 +1,7 @@
 # Turtle Wear
 [![Build Status](https://app.bitrise.io/app/871f631049735080/status.svg?token=n_DQ0VQHPnw8cXNTHLX4Ag&branch=master)](https://app.bitrise.io/app/871f631049735080)
-[![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/seperot_turtle-wear?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/dashboard?id=seperot_turtle-wear)
-[![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/seperot_turtle-wear?server=https%3A%2F%2Fsonarcloud.io&style=flat-square)](https://sonarcloud.io/dashboard?id=seperot_turtle-wear)
+[![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/seperot_turtle-wear?server=https%3A%2F%2Fsonarcloud.io&style=flat)](https://sonarcloud.io/dashboard?id=seperot_turtle-wear)
+[![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/seperot_turtle-wear?server=https%3A%2F%2Fsonarcloud.io&style=flat)](https://sonarcloud.io/dashboard?id=seperot_turtle-wear)
 
 TrtlWear is a watchface that tells you all the important things you need, like the time, date, weather,
 battery, and how much TRTL is trading for.
