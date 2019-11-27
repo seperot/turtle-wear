@@ -81,7 +81,7 @@ class TurtleFace : CanvasWatchFaceService() {
     override fun onCreate(holder: SurfaceHolder) {
       super.onCreate(holder)
       TurtlePriceWorker().runTradeUpdate()
-      WeatherWorker().getWeather()
+      WeatherWorker().getWeather(this@TurtleFace.applicationContext)
       setWatchFaceStyle(WatchFaceStyle.Builder(this@TurtleFace)
               .setAcceptsTapEvents(true)
               .build())
@@ -132,9 +132,6 @@ class TurtleFace : CanvasWatchFaceService() {
         price.visibility = View.INVISIBLE
         logo.setImageResource(R.drawable.logo_white)
       } else {
-        setPhoneBattery(PhoneBatteryWorker().getBatteryLevel(this@TurtleFace.applicationContext))
-        setTrtlPrice()
-        setWeather()
         bottomLeft.visibility = View.VISIBLE
         bottomRight.visibility = View.VISIBLE
         topLeft.visibility = View.VISIBLE
@@ -156,6 +153,9 @@ class TurtleFace : CanvasWatchFaceService() {
     override fun onDraw(canvas: Canvas, bounds: Rect) {
       setTimeandDate()
       setWatchBattery()
+      setPhoneBattery(PhoneBatteryWorker().getBatteryLevel(this@TurtleFace.applicationContext))
+      setTrtlPrice()
+      setWeather()
       watchLayout.measure(specW, specH)
       watchLayout.layout(0, 0, watchLayout.measuredWidth, watchLayout.measuredHeight)
       canvas.save()
@@ -192,9 +192,11 @@ class TurtleFace : CanvasWatchFaceService() {
       val temperature: TextView = watchLayout.findViewById(R.id.temp_number)
       temperature.text = tempString
       val id = resources.getIdentifier("$weatherString", "drawable", packageName)
-      val drawable = resources.getDrawable(id, null)
-      val weatherIco: ImageView = watchLayout.findViewById(R.id.weather_ico)
-      weatherIco.setImageDrawable(drawable)
+      if(id != 0) {
+        val drawable = resources.getDrawable(id, null)
+        val weatherIco: ImageView = watchLayout.findViewById(R.id.weather_ico)
+        weatherIco.setImageDrawable(drawable)
+      }
     }
 
     private fun setTrtlPrice() {
