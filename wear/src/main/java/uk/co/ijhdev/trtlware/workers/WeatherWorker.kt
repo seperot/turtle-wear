@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 
 
-
 /**
  * Created by Seperot on 28/03/2018.
  */
@@ -28,14 +27,16 @@ class WeatherWorker {
   fun getWeather(context: Context) {
     mainHandler.post(object : Runnable {
       override fun run() {
-        val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-              && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {
-          val location = lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-          val latitude = location?.latitude.toString()
-          val longitude = location?.longitude.toString()
-          currentWeatherFinder.getWeatherValues(latitude, longitude)
+        if (getContext == null) getContext = context
+        getContext?.let {
+          val lm = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+          if (ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                  && ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val location = lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val latitude = location?.latitude.toString()
+            val longitude = location?.longitude.toString()
+            currentWeatherFinder.getWeatherValues(latitude, longitude)
+          }
         }
         mainHandler.postDelayed(this, 1200000)
       }
@@ -43,8 +44,9 @@ class WeatherWorker {
   }
 
   companion object {
+    var getContext: Context? = null
     const val ARG_TEMPERATURE = "temperature"
-    var weatherString : String? = "clouds"
-    var tempString : String? = "14"
+    var weatherString: String? = "clouds"
+    var tempString: String? = "14"
   }
 }
