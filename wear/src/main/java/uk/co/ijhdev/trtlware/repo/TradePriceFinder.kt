@@ -14,8 +14,7 @@ import uk.co.ijhdev.trtlware.workers.TurtlePriceWorker.Companion.currentString
 class TradePriceFinder {
 
   private fun getLatestValues(): Call<Prices.CurrencyValues> {
-    val help =  Prices.GetCurrency.create().getAllCurrency()
-    return help
+    return Prices.GetCurrency.create().getAllCurrency()
   }
 
   fun getValue(type : String) {

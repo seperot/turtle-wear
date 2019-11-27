@@ -13,10 +13,31 @@ android {
         versionCode 21
         versionName "2.0.0"
         multiDexEnabled true
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
+
+    configurations {
+        debug
+        release
+    }
+
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        unitTests {
+            includeAndroidResources = true
+            animationsDisabled = true
+        }
+    }
+
     buildTypes {
-        release {
+        debug {
+            debuggable true
+            testCoverageEnabled = true
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -28,11 +49,15 @@ android {
         jvmTarget = "1.8"
     }
     buildToolsVersion = '28.0.3'
+
+    useLibrary 'android.test.runner'
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    //google libs
+    //Google Libs
     implementation 'com.google.android.support:wearable:2.5.0'
     implementation 'com.google.android.gms:play-services-wearable:17.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -42,17 +67,32 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:19.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     compileOnly 'com.google.android.wearable:wearable:2.5.0'
-    //androidx
+    //AndroidX
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.wear:wear:1.0.0'
     implementation "androidx.work:work-runtime-ktx:2.2.0"
-
-    //retrofit
+    //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
-    //testing
+    //Test Implementations
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
+    testImplementation 'androidx.test.ext:truth:1.2.0'
+    testImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation 'androidx.test:monitor:1.2.0'
+    //Espresso Tests
+    testImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    //Junit Tests
     testImplementation 'junit:junit:4.12'
+    //Mockito Tests
+    testImplementation 'org.mockito:mockito-core:3.1.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:3.12.0'
+    //Robolectric tests
+    testImplementation 'org.robolectric:robolectric:4.3.1'
 }
