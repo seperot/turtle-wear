@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 @RunWith(AndroidJUnit4::class)
 class WeatherTest : TestBase(){
 
-    private val mockWeather = """{"Temp": "82", "Icon": "02D"}"""
+    private val mockWeather = """{"Temp": "82", "Icon": "02d"}"""
 
     @Test
     fun testWeather() {

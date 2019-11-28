@@ -17,6 +17,6 @@ class PhoneBatteryWorker{
     fun getBatteryLevel(context: Context) : String {
         val iFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         val batteryStatus = context.registerReceiver(null, iFilter)
-        return (batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0).toString() + "%") ?: "0%"
+        return (batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0).toString() + "%")
     }
 }

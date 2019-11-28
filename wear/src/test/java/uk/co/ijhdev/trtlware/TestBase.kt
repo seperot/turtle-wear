@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
+import java.util.concurrent.CountDownLatch
 
 
 /**
@@ -13,6 +14,9 @@ import org.junit.Before
 open class TestBase {
   protected lateinit var server: MockWebServer
   protected lateinit var context: Application
+  protected val countDownLatch by lazy {
+    CountDownLatch(1)
+  }
 
   @Before
   fun setUp() {
@@ -27,7 +31,11 @@ open class TestBase {
   fun tearDown() {
     server.shutdown()
     server.close()
+    countDownLatch.countDown()
   }
-
+  companion object{
+    const val SMALL_DELAY = 100L
+    const val MAX_WAIT_TIME = 1L
+  }
 
 }

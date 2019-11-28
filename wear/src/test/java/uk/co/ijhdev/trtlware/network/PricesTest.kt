@@ -12,7 +12,7 @@ import org.robolectric.annotation.Config
  */
 @Config(sdk = [28])
 @RunWith(AndroidJUnit4::class)
-class PricesTest : TestBase(){
+class PricesTest : TestBase() {
 
     private val mockPrices = """{"USD": "$14.95", "BTC": "0.00003"}"""
 
