@@ -15,8 +15,7 @@ import uk.co.ijhdev.trtlware.workers.WeatherWorker.Companion.weatherString
 class CurrentWeatherFinder {
 
   private fun getLatestWeather(lat: String, lon: String): Call<Weather.WeatherValues> {
-    val help =  Weather.GetWeather.create().getCurrentWeather(lat, lon)
-    return help
+      return Weather.GetWeather.create().getCurrentWeather(lat, lon)
   }
 
   fun getWeatherValues(lat: String, lon: String) {
