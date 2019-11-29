@@ -1,11 +1,9 @@
 package uk.co.ijhdev.trtlware.workers
 
 import android.content.Context
-import android.os.BatteryManager
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.content.IntentFilter
-
+import android.os.BatteryManager
 
 
 /**

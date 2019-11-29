@@ -14,12 +14,7 @@ class TurtlePriceWorker {
   private val mainHandler = Handler(Looper.getMainLooper())
 
   fun runTradeUpdate() {
-    mainHandler.post(object : Runnable {
-      override fun run() {
-        "BTC".let { tradePriceFinder.getValue(it) }
-        mainHandler.postDelayed(this, 1200000)
-      }
-    })
+    "BTC".let { tradePriceFinder.getValue(it) }
 //    TurtleFace().Engine().setTrtlPrice("1 trtl = " + prefs.getString(ARG_CURRENCY, "")?.let{ tradePriceFinder.getValue(it)})
   }
 

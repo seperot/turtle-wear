@@ -7,10 +7,7 @@ import android.content.IntentFilter
 import android.graphics.Canvas
 import android.graphics.Point
 import android.graphics.Rect
-import android.os.BatteryManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
@@ -78,10 +75,21 @@ class TurtleFace : CanvasWatchFaceService() {
       }
     }
 
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    private fun getLatest() {
+      mainHandler.post(object : Runnable {
+        override fun run() {
+          TurtlePriceWorker().runTradeUpdate()
+          WeatherWorker().getWeather(this@TurtleFace.applicationContext)
+          mainHandler.postDelayed(this, 1200000)
+        }
+        })
+    }
+
     override fun onCreate(holder: SurfaceHolder) {
       super.onCreate(holder)
-      TurtlePriceWorker().runTradeUpdate()
-      WeatherWorker().getWeather(this@TurtleFace.applicationContext)
+      getLatest()
       setWatchFaceStyle(WatchFaceStyle.Builder(this@TurtleFace)
               .setAcceptsTapEvents(true)
               .build())
@@ -196,6 +204,9 @@ class TurtleFace : CanvasWatchFaceService() {
         val drawable = resources.getDrawable(id, null)
         val weatherIco: ImageView = watchLayout.findViewById(R.id.weather_ico)
         weatherIco.setImageDrawable(drawable)
+      }
+      if(tempString.equals("err")) {
+        getLatest()
       }
     }
 
