@@ -14,7 +14,6 @@ class PermissionsActivity : FragmentActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AmbientModeSupport.attach(this)
-        // Display the fragment as the main content.
         supportFragmentManager
             .beginTransaction()
             .replace(android.R.id.content, ControlsPrefFragment())

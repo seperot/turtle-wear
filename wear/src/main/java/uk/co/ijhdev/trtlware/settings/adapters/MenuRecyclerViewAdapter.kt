@@ -53,5 +53,4 @@ class MenuRecyclerViewAdapter(context: Context, items: List<AppItem>) : Recycler
             mImageView.setImageResource(item.getImageId())
         }
     }
-
 }

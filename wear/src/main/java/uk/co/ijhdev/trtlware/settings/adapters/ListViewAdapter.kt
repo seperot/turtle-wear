@@ -27,7 +27,7 @@ class ListViewAdapter(context: Context, items: List<CurrencyListsItem>) :
                 Holder()
             holder.mTextView = getConvertView?.findViewById(R.id.item_text)
             holder.mImageView = getConvertView?.findViewById(R.id.item_image)
-            getConvertView?.tag = holder // Cache the holder for future use.
+            getConvertView?.tag = holder
         } else {
             holder = getConvertView.tag as Holder
         }
