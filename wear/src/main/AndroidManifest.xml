@@ -25,6 +25,23 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
+        <activity
+            android:label="@string/app_name"
+            android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="Currency List"
+            android:name=".settings.CurrencySelectionActivity">
+        </activity>
+        <activity
+            android:label="Permissions List"
+            android:name=".settings.PermissionsActivity">
+        </activity>
+
         <service
             android:name=".watchface.TurtleFace"
             android:label="@string/my_digital_name"
