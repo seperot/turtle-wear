@@ -35,11 +35,7 @@
         </activity>
         <activity
             android:label="Currency List"
-            android:name=".settings.CurrencySelectionActivity">
-        </activity>
-        <activity
-            android:label="Permissions List"
-            android:name=".settings.PermissionsActivity">
+            android:name=".settings.ListSelectionActivity">
         </activity>
 
         <service
