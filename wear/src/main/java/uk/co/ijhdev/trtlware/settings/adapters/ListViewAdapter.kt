@@ -31,7 +31,7 @@ class ListViewAdapter(context: Context, items: List<CurrencyListsItem>) :
         } else {
             holder = getConvertView.tag as Holder
         }
-        holder.mTextView?.setText(mItems[position]!!.getItemId())
+        holder.mTextView?.setText(mItems[position].getItemId())
         return getConvertView!!
     }
 

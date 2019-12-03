@@ -2,12 +2,14 @@ package uk.co.ijhdev.trtlware.settings
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.wear.ambient.AmbientModeSupport
 import kotlinx.android.synthetic.main.activity_lists.*
@@ -16,8 +18,9 @@ import pub.devrel.easypermissions.PermissionRequest
 import uk.co.ijhdev.trtlware.R
 import uk.co.ijhdev.trtlware.settings.adapters.ListViewAdapter
 import uk.co.ijhdev.trtlware.settings.items.CurrencyListsItem
+import uk.co.ijhdev.trtlware.workers.TurtlePriceWorker
+import uk.co.ijhdev.trtlware.workers.WeatherWorker
 import java.util.*
-
 
 /**
  * Created by Seperot on 02/12/2019.
@@ -55,7 +58,15 @@ class ListSelectionActivity : FragmentActivity(),
 
     list_view_lists.onItemClickListener =
             OnItemClickListener { _, _, position, _ ->
-              mItems?.get(position - list_view_lists.headerViewsCount)
+              val sharedPref = SharedPreferenceHandler()
+              if (position == 1) {
+                sharedPref.saveCoinType(context, getString(R.string.list_item_usd))
+                Toast.makeText(context, "Price set to USD", Toast.LENGTH_SHORT).show()
+              } else if (position == 2) {
+                sharedPref.saveCoinType(context, getString(R.string.list_item_btc))
+                Toast.makeText(context, "Price set to BTC", Toast.LENGTH_SHORT).show()
+              }
+              TurtlePriceWorker().runTradeUpdate(context)
             }
   }
 
@@ -72,14 +83,21 @@ class ListSelectionActivity : FragmentActivity(),
 
     list_view_lists.onItemClickListener =
             OnItemClickListener { _, _, position, _ ->
-              mItems?.get(position - list_view_lists.headerViewsCount)
-              EasyPermissions.requestPermissions(
-                      PermissionRequest.Builder(context, 0, Context.LOCATION_SERVICE, Manifest.permission.ACCESS_FINE_LOCATION)
-                              .setRationale("DO ET")
-                              .setPositiveButtonText("OK")
-                              .setNegativeButtonText("NAH")
-                              .build())
-            }
+              if(position == 1) {
+                Toast.makeText(context, "To toggle this permission, you need to go to the App Settings on your device", Toast.LENGTH_LONG).show()
+              } else if (position == 2) {
+                if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                  Toast.makeText(context, "Location already allowed", Toast.LENGTH_SHORT).show()
+                  return@OnItemClickListener
+                }
+                EasyPermissions.requestPermissions(
+                  PermissionRequest.Builder(context, 0, Context.LOCATION_SERVICE, Manifest.permission.ACCESS_FINE_LOCATION)
+                    .setRationale("Location data allows the watch face to get the weather for you")
+                    .setPositiveButtonText("OK")
+                    .setNegativeButtonText("Cancel")
+                    .build())
+              }
+              }
   }
 
   private fun temperatureList() {
@@ -95,7 +113,15 @@ class ListSelectionActivity : FragmentActivity(),
 
     list_view_lists.onItemClickListener =
             OnItemClickListener { _, _, position, _ ->
-              mItems?.get(position - list_view_lists.headerViewsCount)
+              val sharedPref = SharedPreferenceHandler()
+              if (position == 1) {
+                sharedPref.saveTempType(context, getString(R.string.celsius))
+                Toast.makeText(context, "Temperature set to Celsius", Toast.LENGTH_SHORT).show()
+              } else if (position == 2) {
+                sharedPref.saveTempType(context, getString(R.string.fahrenheit))
+                Toast.makeText(context, "Temperature set to Fahrenheit", Toast.LENGTH_SHORT).show()
+              }
+              WeatherWorker().getWeather(context)
             }
   }
 

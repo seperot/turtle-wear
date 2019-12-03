@@ -1,8 +1,10 @@
 package uk.co.ijhdev.trtlware.workers
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import uk.co.ijhdev.trtlware.repo.TradePriceFinder
+import uk.co.ijhdev.trtlware.settings.SharedPreferenceHandler
 
 /**
  * Created by Seperot on 28/03/2018.
@@ -11,11 +13,9 @@ import uk.co.ijhdev.trtlware.repo.TradePriceFinder
 class TurtlePriceWorker {
 
   private var tradePriceFinder = TradePriceFinder()
-  private val mainHandler = Handler(Looper.getMainLooper())
 
-  fun runTradeUpdate() {
-    "BTC".let { tradePriceFinder.getValue(it) }
-//    TurtleFace().Engine().setTrtlPrice("1 trtl = " + prefs.getString(ARG_CURRENCY, "")?.let{ tradePriceFinder.getValue(it)})
+  fun runTradeUpdate(context: Context) {
+    SharedPreferenceHandler().getCoinType(context)?.let { tradePriceFinder.getValue(it) }
   }
 
   companion object {

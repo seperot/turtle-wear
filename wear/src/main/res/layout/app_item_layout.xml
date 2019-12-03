@@ -9,7 +9,8 @@
         android:id="@+id/icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_view_list_white_1x_web_48dp"/>
+        android:src="@drawable/ic_view_list_white_1x_web_48dp"
+        android:contentDescription="@string/trtl" />
     <TextView
         android:id="@+id/icon_text_view"
         android:layout_width="wrap_content"

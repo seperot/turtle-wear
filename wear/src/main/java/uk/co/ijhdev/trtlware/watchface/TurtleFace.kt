@@ -16,6 +16,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import uk.co.ijhdev.trtlware.R
+import uk.co.ijhdev.trtlware.settings.SharedPreferenceHandler
 import uk.co.ijhdev.trtlware.workers.PhoneBatteryWorker
 import uk.co.ijhdev.trtlware.workers.TurtlePriceWorker
 import uk.co.ijhdev.trtlware.workers.WeatherWorker
@@ -80,7 +81,7 @@ class TurtleFace : CanvasWatchFaceService() {
     private fun getLatest() {
       mainHandler.post(object : Runnable {
         override fun run() {
-          TurtlePriceWorker().runTradeUpdate()
+          TurtlePriceWorker().runTradeUpdate(this@TurtleFace)
           WeatherWorker().getWeather(this@TurtleFace.applicationContext)
           mainHandler.postDelayed(this, 1200000)
         }
@@ -89,11 +90,17 @@ class TurtleFace : CanvasWatchFaceService() {
 
     override fun onCreate(holder: SurfaceHolder) {
       super.onCreate(holder)
-      getLatest()
       setWatchFaceStyle(WatchFaceStyle.Builder(this@TurtleFace)
               .setAcceptsTapEvents(true)
               .build())
-
+      val sharedPref = SharedPreferenceHandler()
+      if (sharedPref.getCoinType(this@TurtleFace).equals("")) {
+        sharedPref.saveCoinType(this@TurtleFace, getString(R.string.list_item_btc))
+        }
+      if (sharedPref.getTempType(this@TurtleFace).equals("")) {
+        sharedPref.saveTempType(this@TurtleFace, getString(R.string.celsius))
+      }
+      getLatest()
       mCalendar = Calendar.getInstance()
 
       val resources = this@TurtleFace.resources
