@@ -1,18 +1,16 @@
 package uk.co.ijhdev.trtlware.workers
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Handler
 import android.os.Looper
-import com.google.android.gms.common.api.GoogleApiClient
-import uk.co.ijhdev.trtlware.repo.CurrentWeatherFinder
-import uk.co.ijhdev.trtlware.repo.TradePriceFinder
-import android.location.LocationManager
-import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
+import pub.devrel.easypermissions.EasyPermissions
+import uk.co.ijhdev.trtlware.repo.CurrentWeatherFinder
+import uk.co.ijhdev.trtlware.settings.SharedPreferenceHandler
 
 
 /**
@@ -22,25 +20,23 @@ import androidx.core.content.ContextCompat.getSystemService
 class WeatherWorker {
 
   private var currentWeatherFinder = CurrentWeatherFinder()
-  private val mainHandler = Handler(Looper.getMainLooper())
 
+  @SuppressLint("MissingPermission")
   fun getWeather(context: Context) {
-    mainHandler.post(object : Runnable {
-      override fun run() {
         if (getContext == null) getContext = context
+        val packageManager = context.packageManager
+        if(packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
         getContext?.let {
           val lm = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-          if (ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                  && ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+          if (EasyPermissions.hasPermissions(context, Manifest.permission.ACCESS_FINE_LOCATION)) {
             val location = lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             val latitude = location?.latitude.toString()
             val longitude = location?.longitude.toString()
-            currentWeatherFinder.getWeatherValues(latitude, longitude)
+              SharedPreferenceHandler().getTempType(context)?.let { it1 ->
+                  currentWeatherFinder.getWeatherValues(latitude, longitude, it1)
+              }
           }
         }
-        mainHandler.postDelayed(this, 1200000)
-      }
-    })
   }
 
   companion object {

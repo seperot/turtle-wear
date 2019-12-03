@@ -7,6 +7,16 @@
     <string name="wallettoast">wallet copied to clipboard</string>
     <string name="trtl">trtl</string>
     <string name="trtlwallet">TRTLuxmZawF5XvifHMdqTz8RqaaGxzW1r8irH8u4pUQjaJYBm771taf3wa2eeecf1wURraV3FBHWvBBR6WY2puB9fyE5eTTTqzw</string>
-    <string name="fahrenheit">fahrenheit</string>
-    <string name="celsius">celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="celsius">Celsius</string>
+    <string name="preferences">Permissions</string>
+    <string name="receive_complication_data">"Receive complication data"</string>
+    <string name="location">Location</string>
+    <string name="currency">Currency</string>
+    <string name="list_item_usd">USD</string>
+    <string name="list_item_btc">BTC</string>
+    <string name="select_temparature">Select Temparature</string>
+    <string name="enable_permissions">Enable Permissions</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="temparature">Temparature</string>
 </resources>

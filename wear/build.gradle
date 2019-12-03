@@ -74,6 +74,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.wear:wear:1.0.0'
     implementation "androidx.work:work-runtime-ktx:2.2.0"
+    //Easy Permissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'

@@ -7,10 +7,7 @@ import android.content.IntentFilter
 import android.graphics.Canvas
 import android.graphics.Point
 import android.graphics.Rect
-import android.os.BatteryManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
@@ -19,6 +16,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import uk.co.ijhdev.trtlware.R
+import uk.co.ijhdev.trtlware.settings.SharedPreferenceHandler
 import uk.co.ijhdev.trtlware.workers.PhoneBatteryWorker
 import uk.co.ijhdev.trtlware.workers.TurtlePriceWorker
 import uk.co.ijhdev.trtlware.workers.WeatherWorker
@@ -78,14 +76,31 @@ class TurtleFace : CanvasWatchFaceService() {
       }
     }
 
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    private fun getLatest() {
+      mainHandler.post(object : Runnable {
+        override fun run() {
+          TurtlePriceWorker().runTradeUpdate(this@TurtleFace)
+          WeatherWorker().getWeather(this@TurtleFace.applicationContext)
+          mainHandler.postDelayed(this, 1200000)
+        }
+        })
+    }
+
     override fun onCreate(holder: SurfaceHolder) {
       super.onCreate(holder)
-      TurtlePriceWorker().runTradeUpdate()
-      WeatherWorker().getWeather(this@TurtleFace.applicationContext)
       setWatchFaceStyle(WatchFaceStyle.Builder(this@TurtleFace)
               .setAcceptsTapEvents(true)
               .build())
-
+      val sharedPref = SharedPreferenceHandler()
+      if (sharedPref.getCoinType(this@TurtleFace).equals("")) {
+        sharedPref.saveCoinType(this@TurtleFace, getString(R.string.list_item_btc))
+        }
+      if (sharedPref.getTempType(this@TurtleFace).equals("")) {
+        sharedPref.saveTempType(this@TurtleFace, getString(R.string.celsius))
+      }
+      getLatest()
       mCalendar = Calendar.getInstance()
 
       val resources = this@TurtleFace.resources
@@ -196,6 +211,9 @@ class TurtleFace : CanvasWatchFaceService() {
         val drawable = resources.getDrawable(id, null)
         val weatherIco: ImageView = watchLayout.findViewById(R.id.weather_ico)
         weatherIco.setImageDrawable(drawable)
+      }
+      if(tempString.equals("err")) {
+        getLatest()
       }
     }
 
