@@ -20,6 +20,15 @@ TRTL is the short name for TurtleCoin, you can find more info and get involved [
 While this is always the correct answer, it could be that the app hasn't updated the watch yet (It refreshes in 20 min intervals)
 or you could be having network problems. Give it a bit of time and check if you are connected to the internet.
 
+## How do I change the temperature or currency?
+There is a settings app that comes with the watch face, there you can swap between °C & °F and BTC & USD
+
+## The weather isn't changing from 14
+The watchface needs location permissions, you can either go into the turtle wear settings or the app settings on the watch to turn them on
+
+## The weather isn't changing from err
+This means your device doesn't have gps.
+
 ## Why is **X** feature not added? Check [issues](https://github.com/seperot/TrtlWear/issues) and submit a suggestion if it's not there
 
 ## I like this and I want to shower you in praise
