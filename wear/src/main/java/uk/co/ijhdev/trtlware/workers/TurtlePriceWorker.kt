@@ -20,6 +20,6 @@ class TurtlePriceWorker {
 
   companion object {
     const val ARG_CURRENCY = "currency"
-    var currentString : String? = "1 trtl = 1 trtl"
+    var currentString: String? = "1 trtl = 1 trtl"
   }
 }

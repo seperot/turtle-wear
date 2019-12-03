@@ -14,30 +14,30 @@ import uk.co.ijhdev.trtlware.settings.items.CurrencyListsItem
  * Created by Seperot on 02/12/2019.
  */
 class ListViewAdapter(context: Context, items: List<CurrencyListsItem>) :
-    ArrayAdapter<CurrencyListsItem>(context, R.layout.list_item_layout, items) {
-    private val mInflater: LayoutInflater = LayoutInflater.from(context)
-    private val mItems: List<CurrencyListsItem> = items
+        ArrayAdapter<CurrencyListsItem>(context, R.layout.list_item_layout, items) {
+  private val mInflater: LayoutInflater = LayoutInflater.from(context)
+  private val mItems: List<CurrencyListsItem> = items
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var getConvertView = convertView
-        val holder: Holder
-        if (getConvertView == null) {
-            getConvertView = mInflater.inflate(R.layout.list_item_layout, parent, false)
-            holder =
-                Holder()
-            holder.mTextView = getConvertView?.findViewById(R.id.item_text)
-            holder.mImageView = getConvertView?.findViewById(R.id.item_image)
-            getConvertView?.tag = holder
-        } else {
-            holder = getConvertView.tag as Holder
-        }
-        holder.mTextView?.setText(mItems[position].getItemId())
-        return getConvertView!!
+  override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    var getConvertView = convertView
+    val holder: Holder
+    if (getConvertView == null) {
+      getConvertView = mInflater.inflate(R.layout.list_item_layout, parent, false)
+      holder =
+              Holder()
+      holder.mTextView = getConvertView?.findViewById(R.id.item_text)
+      holder.mImageView = getConvertView?.findViewById(R.id.item_image)
+      getConvertView?.tag = holder
+    } else {
+      holder = getConvertView.tag as Holder
     }
+    holder.mTextView?.setText(mItems[position].getItemId())
+    return getConvertView!!
+  }
 
-    private class Holder {
-        var mTextView: TextView? = null
-        var mImageView: ImageView? = null
-    }
+  private class Holder {
+    var mTextView: TextView? = null
+    var mImageView: ImageView? = null
+  }
 
 }

@@ -14,13 +14,13 @@ import org.robolectric.annotation.Config
 @RunWith(AndroidJUnit4::class)
 class PricesTest : TestBase() {
 
-    private val mockPrices = """{"USD": "$14.95", "BTC": "0.00003"}"""
+  private val mockPrices = """{"USD": "$14.95", "BTC": "0.00003"}"""
 
-    @Test
-    fun testPrices() {
-        server.enqueue(MockResponse().setResponseCode(200).setBody(mockPrices))
-        val help = Prices.GetCurrency.create().getAllCurrency().execute()
-        assertTrue(!help.body()?.usd.isNullOrEmpty())
-        assertTrue(!help.body()?.btc.isNullOrEmpty())
-    }
+  @Test
+  fun testPrices() {
+    server.enqueue(MockResponse().setResponseCode(200).setBody(mockPrices))
+    val help = Prices.GetCurrency.create().getAllCurrency().execute()
+    assertTrue(!help.body()?.usd.isNullOrEmpty())
+    assertTrue(!help.body()?.btc.isNullOrEmpty())
+  }
 }

@@ -85,7 +85,7 @@ class TurtleFace : CanvasWatchFaceService() {
           WeatherWorker().getWeather(this@TurtleFace.applicationContext)
           mainHandler.postDelayed(this, 1200000)
         }
-        })
+      })
     }
 
     override fun onCreate(holder: SurfaceHolder) {
@@ -96,7 +96,7 @@ class TurtleFace : CanvasWatchFaceService() {
       val sharedPref = SharedPreferenceHandler()
       if (sharedPref.getCoinType(this@TurtleFace).equals("")) {
         sharedPref.saveCoinType(this@TurtleFace, getString(R.string.list_item_btc))
-        }
+      }
       if (sharedPref.getTempType(this@TurtleFace).equals("")) {
         sharedPref.saveTempType(this@TurtleFace, getString(R.string.celsius))
       }
@@ -158,9 +158,12 @@ class TurtleFace : CanvasWatchFaceService() {
 
     override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
       when (tapType) {
-        WatchFaceService.TAP_TYPE_TOUCH -> {/* unused */}
-        WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {/* unused */}
-        WatchFaceService.TAP_TYPE_TAP -> {/* unused */}
+        WatchFaceService.TAP_TYPE_TOUCH -> {/* unused */
+        }
+        WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {/* unused */
+        }
+        WatchFaceService.TAP_TYPE_TAP -> {/* unused */
+        }
       }
       invalidate()
     }
@@ -207,12 +210,12 @@ class TurtleFace : CanvasWatchFaceService() {
       val temperature: TextView = watchLayout.findViewById(R.id.temp_number)
       temperature.text = tempString
       val id = resources.getIdentifier("$weatherString", "drawable", packageName)
-      if(id != 0) {
+      if (id != 0) {
         val drawable = resources.getDrawable(id, null)
         val weatherIco: ImageView = watchLayout.findViewById(R.id.weather_ico)
         weatherIco.setImageDrawable(drawable)
       }
-      if(tempString.equals("err")) {
+      if (tempString.equals("err")) {
         getLatest()
       }
     }

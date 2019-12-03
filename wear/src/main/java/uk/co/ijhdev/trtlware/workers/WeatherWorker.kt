@@ -23,20 +23,20 @@ class WeatherWorker {
 
   @SuppressLint("MissingPermission")
   fun getWeather(context: Context) {
-        if (getContext == null) getContext = context
-        val packageManager = context.packageManager
-        if(packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
-        getContext?.let {
-          val lm = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-          if (EasyPermissions.hasPermissions(context, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            val location = lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            val latitude = location?.latitude.toString()
-            val longitude = location?.longitude.toString()
-              SharedPreferenceHandler().getTempType(context)?.let { it1 ->
-                  currentWeatherFinder.getWeatherValues(latitude, longitude, it1)
-              }
+    if (getContext == null) getContext = context
+    val packageManager = context.packageManager
+    if (packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
+      getContext?.let {
+        val lm = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        if (EasyPermissions.hasPermissions(context, Manifest.permission.ACCESS_FINE_LOCATION)) {
+          val location = lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+          val latitude = location?.latitude.toString()
+          val longitude = location?.longitude.toString()
+          SharedPreferenceHandler().getTempType(context)?.let { it1 ->
+            currentWeatherFinder.getWeatherValues(latitude, longitude, it1)
           }
         }
+      }
   }
 
   companion object {

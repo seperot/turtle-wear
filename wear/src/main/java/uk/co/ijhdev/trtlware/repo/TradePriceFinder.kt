@@ -17,25 +17,26 @@ class TradePriceFinder {
     return Prices.GetCurrency.create().getAllCurrency()
   }
 
-  fun getValue(type : String) {
+  fun getValue(type: String) {
     try {
-        getLatestValues().enqueue(object : Callback<Prices.CurrencyValues> {
-          override fun onFailure(call: Call<Prices.CurrencyValues>?, t: Throwable?) {
-            Log.v("retrofit", "price call failed")
-          }
+      getLatestValues().enqueue(object : Callback<Prices.CurrencyValues> {
+        override fun onFailure(call: Call<Prices.CurrencyValues>?, t: Throwable?) {
+          Log.v("retrofit", "price call failed")
+        }
 
-          override fun onResponse(call: Call<Prices.CurrencyValues>?, response: Response<Prices.CurrencyValues>?) {
-            response?.body()?.let {
-              val trtl = "1 trtl = "
-              currentString = when (type) {
-                "BTC" -> trtl + it.btc
-                "USD" -> trtl + it.usd
-                else -> trtl + it.btc
-              }
+        override fun onResponse(call: Call<Prices.CurrencyValues>?, response: Response<Prices.CurrencyValues>?) {
+          response?.body()?.let {
+            val trtl = "1 trtl = "
+            currentString = when (type) {
+              "BTC" -> trtl + it.btc
+              "USD" -> trtl + it.usd
+              else -> trtl + it.btc
             }
           }
-        })
-    } catch (exception : Exception) { /*not used */}
+        }
+      })
+    } catch (exception: Exception) { /*not used */
+    }
     currentString = "1 trtl = 1 trtl"
   }
 }

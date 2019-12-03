@@ -33,7 +33,8 @@ open class TestBase {
     server.close()
     countDownLatch.countDown()
   }
-  companion object{
+
+  companion object {
     const val SMALL_DELAY = 100L
     const val MAX_WAIT_TIME = 1L
   }

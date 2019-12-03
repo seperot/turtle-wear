@@ -36,7 +36,7 @@ class ListSelectionActivity : FragmentActivity(),
     mItems = ArrayList()
     val bundle = intent.extras
     bundle?.let {
-      when(bundle.getString(LIST_TYPE)) {
+      when (bundle.getString(LIST_TYPE)) {
         getString(R.string.preferences) -> permissionsList()
         getString(R.string.currency) -> currencyList()
         getString(R.string.temparature) -> temperatureList()
@@ -83,7 +83,7 @@ class ListSelectionActivity : FragmentActivity(),
 
     list_view_lists.onItemClickListener =
             OnItemClickListener { _, _, position, _ ->
-              if(position == 1) {
+              if (position == 1) {
                 Toast.makeText(context, "To toggle this permission, you need to go to the App Settings on your device", Toast.LENGTH_LONG).show()
               } else if (position == 2) {
                 if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -91,13 +91,13 @@ class ListSelectionActivity : FragmentActivity(),
                   return@OnItemClickListener
                 }
                 EasyPermissions.requestPermissions(
-                  PermissionRequest.Builder(context, 0, Context.LOCATION_SERVICE, Manifest.permission.ACCESS_FINE_LOCATION)
-                    .setRationale("Location data allows the watch face to get the weather for you")
-                    .setPositiveButtonText("OK")
-                    .setNegativeButtonText("Cancel")
-                    .build())
+                        PermissionRequest.Builder(context, 0, Context.LOCATION_SERVICE, Manifest.permission.ACCESS_FINE_LOCATION)
+                                .setRationale("Location data allows the watch face to get the weather for you")
+                                .setPositiveButtonText("OK")
+                                .setNegativeButtonText("Cancel")
+                                .build())
               }
-              }
+            }
   }
 
   private fun temperatureList() {

@@ -12,15 +12,15 @@ import org.robolectric.annotation.Config
  */
 @Config(sdk = [28])
 @RunWith(AndroidJUnit4::class)
-class WeatherTest : TestBase(){
+class WeatherTest : TestBase() {
 
-    private val mockWeather = """{"Temp": "82", "Icon": "02d"}"""
+  private val mockWeather = """{"Temp": "82", "Icon": "02d"}"""
 
-    @Test
-    fun testWeather() {
-        server.enqueue(MockResponse().setResponseCode(200).setBody(mockWeather))
-        val help = Weather.GetWeather.create().getCurrentWeather("12", "12").execute()
-        assertTrue(!help.body()?.icon.isNullOrEmpty())
-        assertTrue(!help.body()?.temp.isNullOrEmpty())
-    }
+  @Test
+  fun testWeather() {
+    server.enqueue(MockResponse().setResponseCode(200).setBody(mockWeather))
+    val help = Weather.GetWeather.create().getCurrentWeather("12", "12").execute()
+    assertTrue(!help.body()?.icon.isNullOrEmpty())
+    assertTrue(!help.body()?.temp.isNullOrEmpty())
+  }
 }

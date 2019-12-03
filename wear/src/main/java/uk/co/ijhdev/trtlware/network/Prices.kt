@@ -11,27 +11,27 @@ import retrofit2.http.GET
  */
 class Prices {
 
-    class CurrencyValues {
-        @SerializedName("USD")
-        var usd: String? = null
-        @SerializedName("BTC")
-        var btc: String? = null
-    }
+  class CurrencyValues {
+    @SerializedName("USD")
+    var usd: String? = null
+    @SerializedName("BTC")
+    var btc: String? = null
+  }
 
-    interface GetCurrency {
-        @GET("/coin")
-         fun getAllCurrency(): Call<CurrencyValues>
+  interface GetCurrency {
+    @GET("/coin")
+    fun getAllCurrency(): Call<CurrencyValues>
 
-        companion object Factory {
-            private const val BASE_URL = "http://api.ijhdev.co.uk"
-            fun create(): GetCurrency {
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                return retrofit.create(GetCurrency::class.java)
-            }
-        }
+    companion object Factory {
+      private const val BASE_URL = "http://api.ijhdev.co.uk"
+      fun create(): GetCurrency {
+        val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        return retrofit.create(GetCurrency::class.java)
+      }
     }
+  }
 }
 

@@ -10,27 +10,27 @@ import uk.co.ijhdev.trtlware.settings.ListSelectionActivity.Companion.LIST_TYPE
  */
 
 class AppItem(itemName: String, imageId: Int, clazz: Class<out Activity?>) {
-    private val mItemName: String = itemName
-    private val mImageId: Int = imageId
-    private val mViewType: Int = Constants.NORMAL
-    private val mClass: Class<*> = clazz
+  private val mItemName: String = itemName
+  private val mImageId: Int = imageId
+  private val mViewType: Int = Constants.NORMAL
+  private val mClass: Class<*> = clazz
 
-    fun getItemName(): String {
-        return mItemName
-    }
+  fun getItemName(): String {
+    return mItemName
+  }
 
-    fun getImageId(): Int {
-        return mImageId
-    }
+  fun getImageId(): Int {
+    return mImageId
+  }
 
-    fun getViewType(): Int {
-        return mViewType
-    }
+  fun getViewType(): Int {
+    return mViewType
+  }
 
-    fun launchActivity(context: Context) {
-        val intent = Intent(context, mClass)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra(LIST_TYPE, mItemName)
-        context.startActivity(intent)
-    }
+  fun launchActivity(context: Context) {
+    val intent = Intent(context, mClass)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.putExtra(LIST_TYPE, mItemName)
+    context.startActivity(intent)
+  }
 }
