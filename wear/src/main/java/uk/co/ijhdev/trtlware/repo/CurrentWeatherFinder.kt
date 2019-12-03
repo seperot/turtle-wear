@@ -7,6 +7,7 @@ import retrofit2.Response
 import uk.co.ijhdev.trtlware.network.Weather
 import uk.co.ijhdev.trtlware.workers.WeatherWorker.Companion.tempString
 import uk.co.ijhdev.trtlware.workers.WeatherWorker.Companion.weatherString
+import kotlin.math.roundToInt
 
 /**
  * Created by Seperot on 26/03/2018.
@@ -29,9 +30,9 @@ class CurrentWeatherFinder {
               response?.body()?.let {
                   weatherString = "w" + it.icon
                   tempString = if(temp == "Fahrenheit") {
-                      (it.temp!!.toFloat() * 9.0f/5.0f + 32).toString() + " °F"
+                      (it.temp!!.toFloat() * 9.0f/5.0f + 32).roundToInt().toString() + "°F"
                   } else {
-                      it.temp + " °C"
+                      it.temp + "°C"
                   }
               }
           }
