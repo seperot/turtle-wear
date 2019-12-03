@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="currency_array_main">
+        <item name="USD">USD</item>
+        <item name="BTC">BTC</item>
+    </string-array>
+</resources>
