@@ -29,7 +29,8 @@ The watchface needs location permissions, you can either go into the turtle wear
 ## The weather isn't changing from err
 This means your device doesn't have gps.
 
-## Why is **X** feature not added? Check [issues](https://github.com/seperot/TrtlWear/issues) and submit a suggestion if it's not there
+## Why is **X** feature not added? 
+Check [issues](https://github.com/seperot/TrtlWear/issues) and submit a suggestion if it's not there
 
 ## I like this and I want to shower you in praise
 
